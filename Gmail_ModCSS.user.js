@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Gmail_ModCSS
 // @description    Gmail ModCSS
-// @version        0.20220624.0
+// @version        0.20220717.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://mail.google.com/mail/u/*
@@ -26,6 +26,14 @@ table.cf, .UG, .nr {
 }
 .adp, .h9, .adI, .aHn {
     background-color: #fc3 !important;
+}
+.gb_Se.gb_Te .gb_df {
+    color: #fff !important;
+}
+.gb_df {
+    padding: 0   0 8px 3px !important;
+    margin: -5px 0 8px 3px !important;
+    color: #999 !important;
 }
 .ig .g3, .hI .g3, .iv .g3, .hx .hb, .go, .gt a {
     color: #ba0 !important;
