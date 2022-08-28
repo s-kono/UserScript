@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           slack_css.user.js
 // @description    slack_css
-// @version        0.20220829.0
+// @version        0.20220829.1
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://app.slack.com/client/*
@@ -18,6 +18,9 @@
     var css = `
 div.p-channel_sidebar__channel--muted:after {
     content: "🔇";
+}
+div.c-message_kit__background--hovered:hover {
+    background-color: #2f5519;
 }
     `;
     var style = document.createElement('style');
