@@ -8,8 +8,8 @@
 // @grant          none
 // @run-at         document-end
 // @icon           https://abs.twimg.com/responsive-web/client-web/icon-ios.b1fc7278.png
-// @updateURL      https://raw.githubusercontent.com/s-kono/UserScript/main/Twitter_OpenEmbeddedContent.user.js
-// @downloadURL    https://raw.githubusercontent.com/s-kono/UserScript/main/Twitter_OpenEmbeddedContent.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Twitter_OpenEmbeddedContent.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Twitter_OpenEmbeddedContent.user.js
 // ==/UserScript==
 
 (function () {

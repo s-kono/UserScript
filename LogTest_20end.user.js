@@ -8,8 +8,8 @@
 // @grant          none
 // @run-at         document-end
 // @icon           data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAREREA/wDrAOXl5QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiIiIiIiIiIiIiIiIiIiAAAgAAIAACICIiAiAgIgIgIiICICAiAiAiIgIgICICICIiAiAgIAIgIiICICAiIiAiIgIgICIiICIiAiAgIiIgIiICICAiIiAiIgAAIAACIiIiIiIiIiIiIiIiIiIiIhEREREREREREREREREREREAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-// @updateURL      https://raw.githubusercontent.com/s-kono/UserScript/main/LogTest_20end.user.js
-// @downloadURL    https://raw.githubusercontent.com/s-kono/UserScript/main/LogTest_20end.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/LogTest_20end.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/LogTest_20end.user.js
 // ==/UserScript==
 
 (function () {

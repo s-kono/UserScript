@@ -8,8 +8,8 @@
 // @grant          none
 // @run-at         document-end
 // @icon           https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/1024px-Gmail_icon_%282020%29.svg.png
-// @updateURL      https://raw.githubusercontent.com/s-kono/UserScript/main/Gmail_ModCSS.user.js
-// @downloadURL    https://raw.githubusercontent.com/s-kono/UserScript/main/Gmail_ModCSS.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Gmail_ModCSS.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Gmail_ModCSS.user.js
 // ==/UserScript==
 
 (function() {

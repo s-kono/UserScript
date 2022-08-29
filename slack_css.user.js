@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           slack_css.user.js
 // @description    slack_css
-// @version        0.20220829.2
+// @version        0.20220829.3
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://app.slack.com/client/*
@@ -16,7 +16,7 @@
     'use strict';
 
     var css = `
-div.p-channel_sidebar__channel--muted:after {
+div.p-channel_sidebar__channel--muted::after {
     content: "🔇";
 }
 div.c-message_kit__background--hovered:hover {

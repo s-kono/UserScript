@@ -8,8 +8,8 @@
 // @grant          none
 // @run-at         document-end
 // @icon           https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Google_Calendar_icon_%282020%29.svg/2048px-Google_Calendar_icon_%282020%29.svg.png
-// @updateURL      https://raw.githubusercontent.com/s-kono/UserScript/main/Gcal_ModCSS.user.js
-// @downloadURL    https://raw.githubusercontent.com/s-kono/UserScript/main/Gcal_ModCSS.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Gcal_ModCSS.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Gcal_ModCSS.user.js
 // ==/UserScript==
 
 (function() {
