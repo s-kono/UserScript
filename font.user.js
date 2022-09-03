@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           font.user.js
 // @description    font
-// @version        0.20220830.0
+// @version        0.20220904.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          <all_urls>
@@ -19,7 +19,7 @@
 body {
     font-family: "FirgeNerd", "PlemolJP", "Terminus-ja", "MJ-UD新ゴ Pr6N", "メイリオ", sans-serif !important;
 }
-pre {
+pre, code {
     font-family: "FirgeNerd", "PlemolJP", "Terminus-ja", "BIZ UDゴシック", "UD デジタル 教科書体 N-R", "MS ゴシック", sans-serif !important;
 }
     `;
