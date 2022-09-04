@@ -6,7 +6,7 @@
 // @author         github.com/s-kono
 // @match          https://twitter.com/*
 // @grant          none
-// @run-at         document-end
+// @run-at         document-idle
 // @icon           https://abs.twimg.com/responsive-web/client-web/icon-ios.b1fc7278.png
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/Twitter_OpenEmbeddedContent.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/Twitter_OpenEmbeddedContent.user.js

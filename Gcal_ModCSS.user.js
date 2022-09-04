@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name           Gcal_ModCSS
 // @description    Gcal ModCSS
-// @version        0.20220624.0
+// @version        0.20220904.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://calendar.google.com/calendar/u/0/*
 // @grant          none
-// @run-at         document-end
+// @run-at         document-idle
 // @icon           https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Google_Calendar_icon_%282020%29.svg/2048px-Google_Calendar_icon_%282020%29.svg.png
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/Gcal_ModCSS.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/Gcal_ModCSS.user.js
@@ -64,9 +64,8 @@ body, header, .tNDBE, .W0m3G::before, .W0m3G .r4nke, .Kk7lMc-DWWcKd-OomVLb-haAcl
     background-color: red !important;
 }
     `;
-    var head = document.head;
     var style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
-    head.appendChild(style);
+    document.head.appendChild(style);
 })();

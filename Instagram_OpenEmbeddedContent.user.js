@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name           Instagram_OpenEmbeddedContent.user.js
+// @name           Instagram_OpenEmbeddedContent
 // @description    Instagram OpenEmbeddedContent
 // @version        0.20171021.2
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.instagram.com/p/*
 // @grant          none
-// @run-at         document-end
+// @run-at         document-idle
 // @icon           https://static.cdninstagram.com/rsrc.php/v3/y9/r/uhXzVt-dlj4.png
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/Instagram_OpenEmbeddedContent.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/Instagram_OpenEmbeddedContent.user.js
