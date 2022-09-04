@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           LogTest_10start
-// @description    LogTest start
-// @version        0.20220904.0
+// @description    LogTest start // set start,end.idle
+// @version        0.20220904.1
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          <all_urls>
@@ -11,8 +11,8 @@
 // @icon           data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAREREA/wDrAOXl5QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiIiIiIiIiIiIiIiIiIiAAAgAAIAACICIiAiAgIgIgIiICICAiAiAiIgIgICICICIiAiAgIAIgIiICICAiIiAiIgIgICIiICIiAiAgIiIgIiICICAiIiAiIgAAIAACIiIiIiIiIiIiIiIiIiIiIhEREREREREREREREREREREAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/LogTest_10start.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/LogTest_10start.user.js
-// ==/UserScript==
 // @require        https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js
+// ==/UserScript==
 
 (function () {
     'use strict';
@@ -20,24 +20,30 @@
 
         console.log(name, ": 000");
 
-    function DOM_ContentReady() {
-        console.log(name, ": 101 DOMContentLoaded");
-    }
+    $(function() {
+        console.log(name, ": 204a $");
+    });
 
-    function FullLoad() {
-        console.log(name, ": 103 load");
-    }
+    $(document).ready(function() {
+        console.log(name, ": 204b $(document).ready #deprecated jQuery 3.x");
+    });
 
-    $(document).ready(function(){
-        console.log(name, ": 105 $(document).ready");
+    // jQuery2.X < // $(window).load(function() {
+    $(window).on('load', function() {
+        console.log(name, ": 203 $(window).load");
+    });
+
+    window.addEventListener("load", function() {
+        console.log(name, ": 102 window.addEventListener:load");
     });
 
     window.onload = function() {
-        console.log(name, ": 107 window.onload #deprecated");
+        console.log(name, ": 101 window.onload #deprecated #may not run");
     }
 
-    document.addEventListener("DOMContentLoaded", DOM_ContentReady);
-    window.addEventListener("load", FullLoad);
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log(name, ": 100 document.addEventListener:DOMContentLoaded");
+    });
 
         console.log(name, ": 999");
 })();
