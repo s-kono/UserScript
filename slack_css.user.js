@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           slack_css
-// @description    slack CSS
-// @version        0.20220829.3
+// @description    slack mod CSS for Dark Theme
+// @version        0.20220904.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://app.slack.com/client/*
@@ -14,13 +14,15 @@
 
 (function() {
     'use strict';
-
     var css = `
 div.p-channel_sidebar__channel--muted::after {
     content: "🔇";
 }
-div.c-message_kit__background--hovered:hover {
+div.c-message_kit__background--labels.c-message_kit__background--hovered:hover {
     background-color: #2f5519;
+}
+div.c-message_kit__background--hovered:hover:not(.c-message_kit__background--labels) {
+    background-color: black;
 }
     `;
     var style = document.createElement('style');
