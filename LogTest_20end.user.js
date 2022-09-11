@@ -16,7 +16,7 @@
 
 (function () {
     'use strict';
-    var name = "LogTest_end";
+    const name = "LogTest_end";
 
         console.log(name, ": 000");
 

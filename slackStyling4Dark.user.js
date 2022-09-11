@@ -14,7 +14,7 @@
 
 (function() {
     'use strict';
-    var css = `
+    const css = `
 blockquote.c-mrkdwn__quote {
     position: relative;
     margin: 2em 0;
@@ -50,7 +50,7 @@ div.c-message_attachment__body {
     background: #0a0a33;
 }
     `;
-    var style = document.createElement('style');
+    const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);

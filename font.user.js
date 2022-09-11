@@ -15,7 +15,7 @@
 
 (function() {
     'use strict';
-    var css = `
+    const css = `
 body {
     font-family: "FirgeNerd", "PlemolJP", "Terminus-ja", "MJ-UD新ゴ Pr6N", "メイリオ", sans-serif !important;
 }
@@ -23,7 +23,7 @@ pre, code {
     font-family: "FirgeNerd", "PlemolJP", "Terminus-ja", "BIZ UDゴシック", "UD デジタル 教科書体 N-R", "MS ゴシック", sans-serif !important;
 }
     `;
-    var style = document.createElement('style');
+    const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);

@@ -14,13 +14,12 @@
 
 (function () {
     'use strict';
-    var ret;
-    ret = document.evaluate('//meta[@property="og:image"]', document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-    for ( var i=0; i < ret.snapshotLength; i++ ) {
-        window.open( ret.snapshotItem(i).getAttribute('content') );
+    const img = document.evaluate('//meta[@property="og:image"]', document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    for ( let i=0; i < ret.snapshotLength; i++ ) {
+        window.open( img.snapshotItem(i).getAttribute('content') );
     }
-    ret = document.evaluate('//meta[@property="og:video"]', document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-    for ( var i=0; i < ret.snapshotLength; i++ ) {
-        window.open( ret.snapshotItem(i).getAttribute('content') );
+    const vdo = document.evaluate('//meta[@property="og:video"]', document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    for ( let i=0; i < ret.snapshotLength; i++ ) {
+        window.open( vdo.snapshotItem(i).getAttribute('content') );
     }
 })();

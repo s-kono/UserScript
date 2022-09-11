@@ -14,7 +14,7 @@
 
 (function() {
     'use strict';
-    var css = `
+    const css = `
 table, .ajA, .iY .Bu, .ii div {
     color: #fff !important;
     background: #000 !important;
@@ -57,7 +57,7 @@ table.gstt {
     padding: 0 0 18px 5px !important;
 }
     `;
-    var style = document.createElement('style');
+    const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);

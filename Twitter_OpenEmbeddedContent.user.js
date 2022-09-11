@@ -15,22 +15,21 @@
 (function () {
     'use strict';
     if ( location.href.match(/^https:\/\/twitter.com\/.*\/statuse?s?\//) ) {
-        var ret;
-        var flag = 0;
-        ret = document.evaluate('//meta[@property="og:video:url"]', document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-        for ( var i=0; i < ret.snapshotLength; i++ ) {
+        let flag = 0;
+        const vdo = document.evaluate('//meta[@property="og:video:url"]', document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+        for ( let i=0; i < vdo.snapshotLength; i++ ) {
             flag = 1;
-            window.open( ret.snapshotItem(i).getAttribute('content') );
+            window.open( vdo.snapshotItem(i).getAttribute('content') );
         }
         if ( flag == 1 ) {
             return;
         }
-        ret = document.evaluate('//meta[@property="og:image"]', document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-        for ( var i=0; i < ret.snapshotLength; i++ ) {
-            if ( ret.snapshotItem(i).getAttribute('content').match( /pbs.twimg.com\/profile_images\// ) ) {
+        const img = document.evaluate('//meta[@property="og:image"]', document.body, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+        for ( let i=0; i < img.snapshotLength; i++ ) {
+            if ( img.snapshotItem(i).getAttribute('content').match( /pbs.twimg.com\/profile_images\// ) ) {
                 continue;
             }
-            window.open( ret.snapshotItem(i).getAttribute('content') );
+            window.open( img.snapshotItem(i).getAttribute('content') );
         }
     }
 })();

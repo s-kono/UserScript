@@ -14,7 +14,7 @@
 
 (function() {
     'use strict';
-    var css = `
+    const css = `
 div.p-channel_sidebar__channel--muted::after {
     content: "🔇";
 }
@@ -25,7 +25,7 @@ div.c-message_kit__background--hovered:hover:not(.c-message_kit__background--lab
     background-color: black;
 }
     `;
-    var style = document.createElement('style');
+    const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
