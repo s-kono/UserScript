@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           font
-// @description    mod font CSS
-// @version        0.20220904.0
+// @description    mod font
+// @version        0.20220919.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          <all_urls>
@@ -17,14 +17,30 @@
     'use strict';
     const css = `
 body {
-    font-family: "FirgeNerd", "PlemolJP", "Terminus-ja", "MJ-UD新ゴ Pr6N", "メイリオ", sans-serif !important;
+    font-family: 'MJ-UD新ゴ Pr6N', 'BIZ UDPGothic', sans-serif !important;
+    font-display: swap;
 }
 pre, code {
-    font-family: "FirgeNerd", "PlemolJP", "Terminus-ja", "BIZ UDゴシック", "UD デジタル 教科書体 N-R", "MS ゴシック", sans-serif !important;
+    font-family: 'FirgeNerd', 'PlemolJP', 'Terminus-ja', 'BIZ UDGothic', sans-serif !important;
+    font-display: swap;
 }
     `;
     const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
+    let link;
+    link = document.createElement('link');
+    link.rel = 'preconnect';
+    link.href = 'https://fonts.googleapis.com';
+    document.head.appendChild(link);
+    link = document.createElement('link');
+    link.setAttribute('crossorigin', '');
+    link.rel = 'preconnect';
+    link.href = 'https://fonts.gstatic.com';
+    document.head.appendChild(link);
+    link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=BIZ+UDPGothic:wght@400;700&display=swap';
+    document.head.appendChild(link);
 })();
