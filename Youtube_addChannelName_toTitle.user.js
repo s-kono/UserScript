@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20220925.0
+// @version        0.20220925.2
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/watch*
@@ -15,13 +15,20 @@
 
 (function() {
     'use strict';
+    let pre_title = '';
     const timer = setInterval(function() {
         for(const ch_name of $('#upload-info yt-formatted-string.ytd-channel-name')) {
-            const movie_title = $('h1.title > yt-formatted-string')[0];
-            const new_title = String(ch_name.innerText) + ": " + String(movie_title.innerText);
-            $('head > title')[0].innerText = new_title;
-            movie_title.innerText  = new_title;
-            clearInterval(timer);
+            const head_title = $('head > title')[0];
+            const a = head_title.innerText;
+            if(a == pre_title) {
+                continue;
+            }
+            const b = String(ch_name.innerText) + ": " + String(head_title.innerText);
+            if(a != b) {
+                head_title.innerText = b;
+                pre_title = b;
+            }
+            //clearInterval(timer);
         }
     }, 3000);
 })();
