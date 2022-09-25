@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20220925.3
+// @version        0.20220926.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -24,12 +24,13 @@
             if(a == pre_title) {
                 continue;
             }
-            const b = String(ch_name.innerText) + ": " + String(head_title.innerText);
+            const b = String(head_title.innerText).replace(/ - YouTube$/, '') + " : " + String(ch_name.innerText) + " - YouTube";
             if(a == b) {
                 continue;
             }
             head_title.innerText = b;
             pre_title = b;
+            console.log(b);
         }
     }
 
