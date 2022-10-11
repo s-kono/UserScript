@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           font
 // @description    mod font
-// @version        0.20220919.0
+// @version        0.20221011.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          <all_urls>
@@ -16,12 +16,12 @@
 (function() {
     'use strict';
     const css = `
-body {
-    font-family: 'MJ-UD新ゴ Pr6N', 'BIZ UDPGothic', sans-serif !important;
+body, h1, h2, h3, h4 {
+    font-family: 'MJ-UD新ゴ Pr6N', 'BIZ UDPGothic', 'メイリオ', sans-serif !important;
     font-display: swap;
 }
 pre, code {
-    font-family: 'FirgeNerd', 'PlemolJP', 'Terminus-ja', 'BIZ UDGothic', sans-serif !important;
+    font-family: 'FirgeNerd', 'PlemolJP', 'Terminus-ja', 'BIZ UDGothic', 'UD デジタル 教科書体 N-R', 'MS ゴシック', sans-serif !important;
     font-display: swap;
 }
     `;
