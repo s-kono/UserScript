@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20220926.0
+// @version        0.20221022.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -15,25 +15,27 @@
 
 (function() {
     'use strict';
-    let pre_title = '';
 
+    let pre_title = '';
     function addChannelName() {
+        console.log("[Youtube_addChannelName_toTitle] addChannelName()");
         for(const ch_name of $('#upload-info yt-formatted-string.ytd-channel-name')) {
             const head_title = $('head > title')[0];
             const a = head_title.innerText;
             if(a == pre_title) {
                 continue;
             }
+            console.log("[Youtube_addChannelName_toTitle] pre_title: ", pre_title);
+            console.log("[Youtube_addChannelName_toTitle]         a: ", a);
             const b = String(head_title.innerText).replace(/ - YouTube$/, '') + " : " + String(ch_name.innerText) + " - YouTube";
             if(a == b) {
                 continue;
             }
+            console.log("[Youtube_addChannelName_toTitle]         b: ", b);
             head_title.innerText = b;
             pre_title = b;
-            console.log(b);
         }
     }
-
     setTimeout(function() {
         const title_observer = new MutationObserver(function (mutations) {
             if (location.href.match(/\/watch/)) {
@@ -41,7 +43,7 @@
                     // title_observer.disconnect();
                     addChannelName();
                     // title_observer.observe(document.querySelector('title'), { childList: true, subtree: false, characterData: false, attributes: false });
-                }, 2000);
+                }, 5000);
             }
         });
         title_observer.observe(document.querySelector('title'), { childList: true, subtree: false, characterData: false, attributes: false });
@@ -49,4 +51,21 @@
             addChannelName();
         }
     }, 4000);
+
+    const css = `
+ytd-thumbnail-overlay-resume-playback-renderer {
+    height: 10px;
+}
+#progress.ytd-thumbnail-overlay-resume-playback-renderer {
+    background-color: #0d6;
+}
+ytd-thumbnail-overlay-time-status-renderer {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+    `;
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    document.head.appendChild(style);
 })();
