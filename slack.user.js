@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           SlackMod
 // @description    slack mod CSS for Dark Theme
-// @version        0.20221016.0
+// @version        0.20221029.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://app.slack.com/client/*
@@ -30,6 +30,9 @@ div.c-message_kit__background--labels.c-message_kit__background--hovered:hover {
 }
 div.c-message_kit__background--hovered:hover:not(.c-message_kit__background--labels) {
     background-color: black;
+}
+div.p-ia__sidebar_header__upgrade_cta {
+    display: none;
 }
 
 a.msg-scroll-arrow {
