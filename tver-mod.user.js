@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           tver-mod
 // @description    tver: autostart, gain x2, speed x2.1
-// @version        0.202200912.0
+// @version        0.202201120.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://tver.jp/episodes/*
@@ -27,6 +27,6 @@
         setTimeout(function() {
           document.querySelector('video').playbackRate = 2.1;
         }, 1000);
-      }, 1000);
+      }, 3000);
     });
 })();
