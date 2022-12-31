@@ -1,17 +1,16 @@
 // ==UserScript==
-// @name           Youtube_mod
+// @name           twitch_mod
 // @namespace      github.com/s-kono
-// @description    Youtube mod
+// @description    twitch mod
 // @version        0.20221231.0
 // @grant          none
-// @match          https://www.youtube.com/watch*
+// @match          https://www.twitch.tv/videos/*
 // @run-at         document-idle
-// @icon           https://www.youtube.com/s/desktop/435d54f2/img/favicon_144x144.png
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_mod.user.js
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_mod.user.js
+// @icon           https://www.google.com/s2/favicons?sz=64&domain=www.twitch.tv
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/twitch_mod.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/twitch_mod.user.js
 // @require        https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js
 // ==/UserScript==
-// @icon           https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com
 
 (function() {
     'use strict';
@@ -30,7 +29,7 @@
         gainNode.connect(audioCtx.destination);
         video.playbackRate = def_speed;
         let playrate;
-        const ctlbar_left = document.querySelector('div.ytp-left-controls');
+        const ctlbar_left = document.querySelector('div.player-controls__left-control-group');
 
         const btn_rewind10 = document.createElement('button');
         btn_rewind10.style = 'margin-left:20px;';
