@@ -2,7 +2,7 @@
 // @name           twitch_mod
 // @namespace      github.com/s-kono
 // @description    twitch mod
-// @version        0.20221231.0
+// @version        0.20230103.0
 // @grant          none
 // @match          https://www.twitch.tv/videos/*
 // @run-at         document-idle
@@ -17,6 +17,7 @@
 
     const def_speed = 2.2;
     const def_gain = 1;
+    const print_title = "[twitch_mod]";
 
     $(function() {
       setTimeout(function() {
@@ -41,7 +42,7 @@
             video.currentTime -= 10;
             setTimeout(function() {
                 video.playbackRate = playrate;
-                console.log("[Youtube_mod] playbackRate:", video.playbackRate);
+                console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
         ctlbar_left.appendChild(btn_rewind10);
@@ -56,7 +57,7 @@
             video.currentTime += 10;
             setTimeout(function() {
                 video.playbackRate = playrate;
-                console.log("[Youtube_mod] playbackRate:", video.playbackRate);
+                console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
         ctlbar_left.appendChild(btn_forward10);
@@ -71,7 +72,7 @@
             video.currentTime -= 30;
             setTimeout(function() {
                 video.playbackRate = playrate;
-                console.log("[Youtube_mod] playbackRate:", video.playbackRate);
+                console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
         ctlbar_left.appendChild(btn_rewind30);
@@ -86,7 +87,7 @@
             video.currentTime += 30;
             setTimeout(function() {
                 video.playbackRate = playrate;
-                console.log("[Youtube_mod] playbackRate:", video.playbackRate);
+                console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
         ctlbar_left.appendChild(btn_forward30);
@@ -99,10 +100,10 @@
         range.style = 'width:200px; height:6px; margin:auto 20px;';
         range.onchange = range.oninput =e=> {
             gainNode.gain.value = def_gain + (range['valueAsNumber'] / 100);
-            console.log("[Youtube_mod] gain.value:", gainNode.gain.value);
+            console.log(print_title, "gain.value:", gainNode.gain.value);
         };
         ctlbar_left.appendChild(range);
-        console.log('[Youtube_mod]');
+        console.log(print_title);
       }, 2000);
     });
 })();
