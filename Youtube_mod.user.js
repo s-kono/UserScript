@@ -2,16 +2,14 @@
 // @name           Youtube_mod
 // @namespace      github.com/s-kono
 // @description    Youtube mod
-// @version        0.20230103.0
+// @version        0.20230205.0
 // @grant          none
 // @match          https://www.youtube.com/watch*
 // @run-at         document-idle
 // @icon           https://www.youtube.com/s/desktop/435d54f2/img/favicon_144x144.png
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_mod.user.js
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_mod.user.js
-// @require        https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js
 // ==/UserScript==
-// @icon           https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com
 
 (function() {
     'use strict';
@@ -20,8 +18,7 @@
     const def_gain = 1;
     const print_title = "[twitch_mod]";
 
-    $(function() {
-      setTimeout(function() {
+    setTimeout(function() {
         const video = document.querySelector('video');
         const audioCtx = new AudioContext();
         const source = audioCtx.createMediaElementSource(video);
@@ -104,7 +101,7 @@
             console.log(print_title, "gain.value:", gainNode.gain.value);
         };
         ctlbar_left.appendChild(range);
+
         console.log(print_title);
-      }, 2000);
-    });
+    }, 2000);
 })();

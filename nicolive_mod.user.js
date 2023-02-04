@@ -2,14 +2,13 @@
 // @name           nicolive_mod
 // @namespace      github.com/s-kono
 // @description    nicolive mod
-// @version        0.20230103.0
+// @version        0.20230205.0
 // @grant          none
 // @match          https://live.nicovideo.jp/watch/lv*
 // @run-at         document-idle
 // @icon           https://www.google.com/s2/favicons?sz=64&domain=live.nicovideo.jp
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/nicolive_mod.user.js
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/nicolive_mod.user.js
-// @require        https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js
 // ==/UserScript==
 
 (function() {
@@ -17,8 +16,7 @@
 
     const def_gain = 1.5;
 
-    $(function() {
-      setTimeout(function() {
+    setTimeout(function() {
         const video = document.querySelector('video');
         const audioCtx = new AudioContext();
         const source = audioCtx.createMediaElementSource(video);
@@ -40,7 +38,7 @@
             console.log("[Youtube_mod] gain.value:", gainNode.gain.value);
         };
         ctlbar_left.appendChild(range);
+
         console.log('[nicolive_mod]');
-      }, 2000);
-    });
+    }, 2000);
 })();

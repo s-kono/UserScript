@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           video-mod
 // @description    autostart, gain x2, speed x2.1 : tver, abema
-// @version        0.202201217.0
+// @version        0.20230205.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://tver.jp/episodes/*
@@ -16,8 +16,7 @@
 
 (function() {
     'use strict';
-    $(function() {
-      setTimeout(function() {
+    setTimeout(function() {
         $('button.vjs-big-play-button').click();
         const audioCtx = new AudioContext();
         const source = audioCtx.createMediaElementSource(document.querySelector('video'));
@@ -26,8 +25,7 @@
         source.connect(gainNode);
         gainNode.connect(audioCtx.destination);
         setTimeout(function() {
-          document.querySelector('video').playbackRate = 2.1;
+            document.querySelector('video').playbackRate = 2.1;
         }, 1000);
-      }, 3000);
-    });
+    }, 3000);
 })();
