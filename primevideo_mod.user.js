@@ -2,7 +2,7 @@
 // @name           primevideo_mod
 // @namespace      github.com/s-kono
 // @description    primevideo mod
-// @version        0.20230205.0
+// @version        0.20230212.0
 // @grant          none
 // @match          https://www.amazon.co.jp/gp/video/detail/*
 // @run-at         document-idle
@@ -19,8 +19,22 @@
     const print_title = "[primevideo_mod]";
 
     setInterval(function() {
+        if (document.querySelector('[aria-label="Play"]')) {
+            return;
+        }
+
+        const skip = document.querySelector('div.fu4rd6c.f1cw2swo');
+        if (skip && skip.innerText == 'スキップ') {
+            skip.click();
+        }
+
         if(document.querySelector('input.UserScript-add-gainrange')) {
             return;
+        }
+
+        const full_screen = document.querySelector('[aria-label="Fullscreen"]');
+        if (full_screen && full_screen.parentNode.innerHTML.match(/>全画面</) != null) {
+            full_screen.click();
         }
 
       //const video = document.querySelector('video');
@@ -81,5 +95,5 @@
         parts_div.appendChild(range);
 
         console.log(print_title);
-    }, 5000);
+    }, 3000);
 })();

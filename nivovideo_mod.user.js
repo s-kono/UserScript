@@ -2,7 +2,7 @@
 // @name           nivovideo_mod
 // @namespace      github.com/s-kono
 // @description    nivovideo_mod mod
-// @version        0.20230205.0
+// @version        0.20230212.0
 // @grant          none
 // @match          https://www.nicovideo.jp/watch/*
 // @run-at         document-idle
@@ -71,6 +71,11 @@
             console.log(print_title, "gain.value:", gainNode.gain.value);
         };
         target_elem.appendChild(range);
+
+        const full_screen = document.querySelector('[data-title="フルスクリーン"]');
+        if (full_screen) {
+            full_screen.click();
+        }
 
         console.log(print_title);
     }, 2000);
