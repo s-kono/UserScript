@@ -2,7 +2,7 @@
 // @name           primevideo_mod
 // @namespace      github.com/s-kono
 // @description    primevideo mod
-// @version        0.20230212.0
+// @version        0.20230217.0
 // @grant          none
 // @match          https://www.amazon.co.jp/gp/video/detail/*
 // @run-at         document-idle
@@ -47,10 +47,15 @@
         gainNode.connect(audioCtx.destination);
         video.playbackRate = def_speed;
         let playrate;
-      //const target_elem = document.querySelector('div.f45h');
-        const target_elem = document.querySelector('div.f3w9jrr.fcckh95');
+
+      //const target_elem = document.querySelector('div.f3w9jrr.fcckh95');  // video title <div>
+      //const target_elem = document.querySelectorAll('div.fewcsle.fcmecz0')[2]; // volume icon <div>
+        const target_elem = document.querySelector('div.atvwebplayersdk-hideabletopbuttons-container.f1kg2fkb'); // 右上ボタン群(字幕・オプション・ボリューム) div, 全画面ボダン div, 区切り div 達の親 div (hide 対象)
+
         const parts_div = document.createElement('div');
-        target_elem.prepend(parts_div);
+        parts_div.className = 'primevideo_mod';
+        parts_div.style = 'position: absolute; top: 100px; right: 40px;';
+        target_elem.appendChild(parts_div);
 
         const btn_rewind30 = document.createElement('button');
         const img_rewind30 = document.createElement('img');
