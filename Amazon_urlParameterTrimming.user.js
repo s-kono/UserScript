@@ -2,7 +2,7 @@
 // @name           Amazon_urlParameterTrimming
 // @namespace      github.com/s-kono
 // @description    Amazon URL Parameter Trimming
-// @version        0.20230221.0
+// @version        0.20230402.0
 // @match          https://www.amazon.co.jp/*
 // @exclude        https://www.amazon.co.jp/*buy*
 // @exclude        https://www.amazon.co.jp/*handle-buy-box*
@@ -18,7 +18,7 @@
 // ==/UserScript==
 
 ( function () {
-    const tag = "[AmazonURL_ParameterTrimming]"
+    const tag = "[Amazon_urlParameterTrimming]"
     const log_flag = 1;
     const o_url = location.href;
     let n_url = o_url;
@@ -29,8 +29,8 @@
     main();
 
     function main() {
-        if ( o_url.match( /^(https:\/\/www\.amazon\.co\.jp).*\/(?:.*gp\/product|.*dp)\/([0-9A-Z]+)/ ) ) {
-            n_url = RegExp.$1 + '/dp/' + RegExp.$2.replace( /\?.*/, '' );;
+        if ( o_url.match( /^(https:\/\/www\.amazon\.co\.jp)\/(?:.*gp\/product|.*dp)\/([0-9A-Z]+)(\?m=AN1VRQENFRJN5)?/ ) ) {
+            n_url = RegExp.$1 + '/dp/' + RegExp.$2 + RegExp.$3;
             if ( log_flag > 0 ) console.log(tag, "i10:", o_url, ">", n_url);
         }
         last();
