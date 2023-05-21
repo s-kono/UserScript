@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20221022.0
+// @version        0.20230521.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -10,7 +10,7 @@
 // @icon           https://www.youtube.com/s/desktop/435d54f2/img/favicon_144x144.png
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_addChannelName_toTitle.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_addChannelName_toTitle.user.js
-// @require        https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.slim.min.js
+// @require        https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.slim.min.js
 // ==/UserScript==
 
 (function() {
@@ -57,7 +57,9 @@ ytd-thumbnail-overlay-resume-playback-renderer {
     height: 10px;
 }
 #progress.ytd-thumbnail-overlay-resume-playback-renderer {
-    background-color: #0d6;
+    background-color: red;
+    border-top: 3px solid yellow;
+    border-right: 3px solid yellow;
 }
 ytd-thumbnail-overlay-time-status-renderer {
     margin-bottom: 10px;
