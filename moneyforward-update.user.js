@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           moneyforward-update
 // @description    moneyforward auto update
-// @version        0.20230207.0
+// @version        0.20230611.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://moneyforward.com/
@@ -14,9 +14,20 @@
 
 (function() {
     'use strict';
+
+    function formatDate(date) {
+        const yyyy = date.getFullYear();
+        const mm = ('0' + (date.getMonth()+1)).slice(-2);
+        const dd = ('0' + date.getDate()).slice(-2);
+        const hhmmss = ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);
+        return (yyyy + '-' + mm + '-' + dd + ' ' + hhmmss);
+    }
+
+    const name = 'moneyforward-update';
     setTimeout(function() {
-        console.log('[moneyforward-update] update');
+        console.log('[' + name + '] ' + formatDate(new Date()) + ' trigger');
         $("ul.facilities.accounts-list > li > ul > li > a:contains('更新')").trigger('click');
-    }, 32400000);
-    console.log('[moneyforward-update]');
+    }, 1000 * 3600 * 9);
+
+    console.log('[' + name + '] ' + formatDate(new Date()));
 })();
