@@ -2,9 +2,9 @@
 // @name           twitch_mod
 // @namespace      github.com/s-kono
 // @description    twitch mod
-// @version        0.20230205.0
+// @version        0.20230611.0
 // @grant          none
-// @match          https://www.twitch.tv/videos/*
+// @match          https://www.twitch.tv/*
 // @run-at         document-idle
 // @icon           https://www.google.com/s2/favicons?sz=64&domain=www.twitch.tv
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/twitch_mod.user.js
@@ -14,8 +14,8 @@
 (function() {
     'use strict';
 
-    const def_speed = 2.2;
-    const def_gain = 1;
+    let def_speed = 1;
+    const def_gain = 1.5;
     const print_title = "[twitch_mod]";
 
     setTimeout(function() {
@@ -29,6 +29,9 @@
         video.playbackRate = def_speed;
         let playrate;
         const ctlbar_left = document.querySelector('div.player-controls__left-control-group');
+
+      if (location.href.match(/www.twitch.tv\/videos\//)) {
+        def_speed = 2.2;
 
         const btn_rewind10 = document.createElement('button');
         btn_rewind10.style = 'margin-left:20px;';
@@ -89,7 +92,7 @@
             }, 1500);
         });
         ctlbar_left.appendChild(btn_forward30);
-
+      }
         const range = document.createElement('input');
         range.max = 900;
         range.type = 'range';
