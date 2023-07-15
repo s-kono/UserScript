@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20230521.0
+// @version        0.20230715.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -64,6 +64,9 @@ ytd-thumbnail-overlay-resume-playback-renderer {
 ytd-thumbnail-overlay-time-status-renderer {
     margin-bottom: 10px;
     padding: 5px;
+}
+ytd-video-owner-renderer[watch-metadata-refresh] {
+    min-width: unset;
 }
     `;
     const style = document.createElement('style');
