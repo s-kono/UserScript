@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20230715.0
+// @version        0.20230729.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -51,26 +51,4 @@
             addChannelName();
         }
     }, 4000);
-
-    const css = `
-ytd-thumbnail-overlay-resume-playback-renderer {
-    height: 10px;
-}
-#progress.ytd-thumbnail-overlay-resume-playback-renderer {
-    background-color: red;
-    border-top: 3px solid yellow;
-    border-right: 3px solid yellow;
-}
-ytd-thumbnail-overlay-time-status-renderer {
-    margin-bottom: 10px;
-    padding: 5px;
-}
-ytd-video-owner-renderer[watch-metadata-refresh] {
-    min-width: unset;
-}
-    `;
-    const style = document.createElement('style');
-    style.type = 'text/css';
-    style.appendChild(document.createTextNode(css));
-    document.head.appendChild(style);
 })();
