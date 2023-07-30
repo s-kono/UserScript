@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20230730.0
+// @version        0.20230731.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -16,42 +16,53 @@
     'use strict';
 
     const css = `
-ytd-thumbnail-overlay-resume-playback-renderer {
-    height: 10px;
-}
-#progress.ytd-thumbnail-overlay-resume-playback-renderer {
-    background-color: red;
-    border-top: 3px solid yellow;
-    border-right: 3px solid yellow;
-}
-ytd-thumbnail-overlay-time-status-renderer {
-    margin-bottom: 10px;
-    padding: 5px;
-}
-ytd-video-owner-renderer[watch-metadata-refresh] {
-    min-width: unset;
-}
+/* (非動画再生 view) 再生済位置バー */
+  ytd-thumbnail-overlay-resume-playback-renderer {
+      height: 10px;
+  }
+  #progress.ytd-thumbnail-overlay-resume-playback-renderer {
+      background-color: red;
+      border-top: 3px solid yellow;
+      border-right: 3px solid yellow;
+  }
+  ytd-thumbnail-overlay-time-status-renderer {
+      margin-bottom: 10px;
+      padding: 5px;
+  }
+  ytd-video-owner-renderer[watch-metadata-refresh] {
+      min-width: unset;
+  }
 
-div#content > yt-live-chat-author-chip {
-    display: unset;
-}
-div#content > yt-live-chat-author-chip > span#author-name {
-    white-space: nowrap;
-    overflow: hidden;
-}
-div#content > yt-live-chat-author-chip > span#author-name.member.yt-live-chat-author-chip {
-    color: #e0ff8f;
-}
-div#content > span#message {
-    display: table-row;
-}
-yt-live-chat-author-chip[is-highlighted] #author-name.yt-live-chat-author-chip {
-    background-color: red;
-    color: white;
-}
-yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip[is-highlighted] #author-name.yt-live-chat-author-chip ) {
-    margin: 30px 0 30px 0;
-}
+/* チャットログ */
+  div#content > yt-live-chat-author-chip {
+      display: unset;
+  }
+  div#content > yt-live-chat-author-chip > span#author-name {
+      white-space: nowrap;
+      overflow: hidden;
+  }
+  div#content > span#message {
+      display: table-row;
+  }
+
+  /* member */
+    div#content > yt-live-chat-author-chip > span#author-name.member {
+        color: #e0ff8f;
+    }
+
+  /* owner */
+    div#content > yt-live-chat-author-chip > span#author-name.owner {
+        color: red;
+    }
+
+  /* auth? */
+    div#content > yt-live-chat-author-chip[is-highlighted] > span#author-name {
+        background-color: red;
+        color: white;
+    }
+    yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip[is-highlighted] > span#author-name ) {
+        margin: 10px 0 10px 0;
+    }
     `;
     const style = document.createElement('style');
     style.type = 'text/css';
