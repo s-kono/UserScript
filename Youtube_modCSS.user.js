@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20230731.0
+// @version        0.20230801.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -52,16 +52,26 @@
 
   /* owner */
     div#content > yt-live-chat-author-chip > span#author-name.owner {
-        color: red;
+        background-color: red;
+        color: white;
+    }
+    yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip > span#author-name.owner) {
+        border: yellow 4px double;
+        padding: 20px 0 20px 10px;
+        margin: 10px 0 10px 10px;
+        background: #000a8d;
     }
 
   /* auth? */
     div#content > yt-live-chat-author-chip[is-highlighted] > span#author-name {
-        background-color: red;
-        color: white;
+        background-color: yellow;
+        color: black;
     }
-    yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip[is-highlighted] > span#author-name ) {
-        margin: 10px 0 10px 0;
+    yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip[is-highlighted] > span#author-name) {
+        border: yellow 4px double;
+        padding: 20px 0 20px 10px;
+        margin: 10px 0 10px 10px;
+        background: #5d00a0;
     }
     `;
     const style = document.createElement('style');
