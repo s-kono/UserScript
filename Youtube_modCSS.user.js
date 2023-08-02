@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20230802.0
+// @version        0.20230803.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -55,11 +55,21 @@
         background-color: red;
         color: white;
     }
-    yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip > span#author-name.owner) {
+
+    yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip[is-highlighted] > span#author-name.owner) {
         border: yellow 4px double;
+        border-radius: 8px;
         padding: 12px 5px 12px 10px;
         margin: 6px 0 10px 6px;
-        background: #000a8d;
+        background: #000877 !important;
+    }
+
+    yt-live-chat-text-message-renderer:has(> div#content span#chip-badges > yt-live-chat-author-badge-renderer[aria-label="確認済み"]) {
+        border: white 2px solid;
+        border-radius: 8px;
+        padding: 12px 5px 12px 10px;
+        margin: 6px 0 10px 6px;
+        background: #276900;
     }
 
   /* auth? */
@@ -67,13 +77,15 @@
         background-color: yellow;
         color: black;
     }
-
+  /*
     yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip[is-highlighted]:not(:has(> span#author-name.owner)) > span#author-name) {
         border: white 2px solid;
+        border-radius: 8px;
         padding: 12px 5px 12px 10px;
         margin: 6px 0 10px 6px;
         background: #5d00a0;
     }
+  */
     `;
     const style = document.createElement('style');
     style.type = 'text/css';
