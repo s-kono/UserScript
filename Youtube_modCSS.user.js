@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20230803.0
+// @version        0.20230805.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -54,6 +54,7 @@
     div#content > yt-live-chat-author-chip > span#author-name.owner {
         background-color: red;
         color: white;
+        padding: 0px 6px 0px 6px;
     }
 
     yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip[is-highlighted] > span#author-name.owner) {
@@ -76,7 +77,23 @@
     div#content > yt-live-chat-author-chip[is-highlighted]:not(:has(> span#author-name.owner)) > span#author-name {
         background-color: yellow;
         color: black;
+        padding: 0px 6px 0px 6px;
     }
+
+  /* moderator */
+    div#content > yt-live-chat-author-chip > span#author-name.moderator {
+        background-color: white;
+        color: var(--yt-live-chat-moderator-color);
+        padding: 0px 6px 0px 6px;
+    }
+    yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip > span#author-name.moderator) {
+        border: white 2px solid;
+        border-radius: 8px;
+        padding: 12px 5px 12px 10px;
+        margin: 6px 0 10px 6px;
+        background: #5813b1 !important;
+    }
+
   /*
     yt-live-chat-text-message-renderer:has(> div#content > yt-live-chat-author-chip[is-highlighted]:not(:has(> span#author-name.owner)) > span#author-name) {
         border: white 2px solid;
