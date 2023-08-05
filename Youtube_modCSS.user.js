@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20230805.0
+// @version        0.20230806.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -103,6 +103,10 @@
         background: #5d00a0;
     }
   */
+
+    ytd-watch-flexy[flexy][js-panel-height_] #chat.ytd-watch-flexy:not([collapsed]) {
+        height: 800px;
+    }
     `;
     const style = document.createElement('style');
     style.type = 'text/css';
