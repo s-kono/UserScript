@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           TwitterAgain
 // @description    Twitter favicon Again
-// @version        0.20230802.0
+// @version        0.20230819.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://twitter.com/*
@@ -25,5 +25,9 @@
         document.querySelector("head > link[rel='shortcut icon']").href = favicon;
         //console.log(document.querySelector("head > link[rel='shortcut icon']"));
         console.log('TwitterAgain');
+        setTimeout(function() {
+          document.querySelector("title").textContent = document.querySelector("title").textContent.replace(/^Xユーザーの(.+)さん(: )/, '$1$2');
+          document.querySelector("head > link[rel='shortcut icon']").href = favicon;
+        }, 2000);
     });
 })();
