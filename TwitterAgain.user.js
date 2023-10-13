@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           TwitterAgain
 // @description    Twitter favicon Again
-// @version        0.20230902.0
+// @version        0.20231014.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://twitter.com/*
@@ -49,4 +49,17 @@
         mod();
     });
     observer.observe(document.querySelector('title'), { childList: true, subtree: false, characterData: true, attributes: false });
+
+    const css = `
+div[data-testid="tweetText"] {
+    -webkit-line-clamp: initial !important;
+}
+span {
+    font-family: 'BIZ UDPGothic', 'Meiryo UI', sans-serif !important;
+}
+    `;
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    document.head.appendChild(style);
 })();
