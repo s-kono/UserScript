@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20231112.0
+// @version        0.20231112.1
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -17,7 +17,7 @@
 
     const css = `
   .ytp-progress-bar-container {
-      height: 10px;
+      height: 10px !important;
   }
 
 /* (非動画再生 view) 再生済位置バー */
