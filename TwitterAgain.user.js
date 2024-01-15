@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           TwitterAgain
 // @description    Twitter favicon Again
-// @version        0.20231219.0
+// @version        0.20240114.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://twitter.com/*
@@ -23,8 +23,16 @@ div[data-testid="tweetText"] {
 span {
     font-family: 'BIZ UDPGothic', 'Meiryo UI', sans-serif !important;
 }
+div[data-testid="card.wrapper"] div:has(> div > span) {
+    border: 1px solid white;
+}
 div[data-testid="cellInnerDiv"]:has(svg[data-testid="icon-verified"]) {
     background-color: #023;
+}
+div[aria-label="タイムライン: 会話"] div[data-testid="cellInnerDiv"]:has(h2) {
+    border: 3px dotted red;
+    z-index: 999;
+    margin: -3px;
 }
     `;
     const style = document.createElement('style');
