@@ -2,7 +2,7 @@
 // @name           twitch_mod
 // @namespace      github.com/s-kono
 // @description    twitch mod
-// @version        0.20230611.0
+// @version        0.20240121.0
 // @grant          none
 // @match          https://www.twitch.tv/*
 // @run-at         document-idle
@@ -13,6 +13,16 @@
 
 (function() {
     'use strict';
+
+    const css = `
+div.chat-room__content > div:has(div.channel-leaderboard-header-rotating__users) {
+    display: none;
+}
+    `;
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    document.head.appendChild(style);
 
     let def_speed = 1;
     const def_gain = 1.5;
