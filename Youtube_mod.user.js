@@ -16,7 +16,7 @@
 
     const def_speed = 2.2;
     const def_gain = 1;
-    const print_title = "[twitch_mod]";
+    const print_title = "[YouTube_mod]";
 
     setTimeout(function() {
         const video = document.querySelector('video');
