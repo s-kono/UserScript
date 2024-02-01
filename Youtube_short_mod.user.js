@@ -2,7 +2,7 @@
 // @name           Youtube_short_mod
 // @namespace      github.com/s-kono
 // @description    Youtube short mod
-// @version        0.20240131.0
+// @version        0.20240201.0
 // @grant          none
 // @match          https://www.youtube.com/shorts/*
 // @run-at         document-idle
@@ -13,6 +13,19 @@
 
 (function() {
     'use strict';
+
+    const css = `
+div.progress-bar-played.style-scope.ytd-progress-bar-line {
+    height: 5px;
+}
+div#progress-bar-line.ytd-progress-bar-line {
+    height: 8px;
+}
+    `;
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    document.head.appendChild(style);
 
     const def_speed = 1.5;
     const def_gain = 0.1;
