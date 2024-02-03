@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Gcal_ModCSS
 // @description    Gcal ModCSS
-// @version        0.20240203.0
+// @version        0.20240204.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://calendar.google.com/calendar/u/0/*
@@ -84,6 +84,13 @@ span.nHqeVd:not(:has(span.DvyQhe.BdCDHc)) {
 }
 .g3dbUc.smECzc:hover, .g3dbUc.KCIIIb:hover {
     background-color: red !important;
+}
+div.wuX2hf > div[role="columnheader"]:nth-of-type(7) > span {
+    color: yellow;
+    font-weight: 900;
+}
+div.wuX2hf > div[role="columnheader"]:nth-of-type(8) > span {
+    color: red;
 }
     `;
     const style = document.createElement('style');
