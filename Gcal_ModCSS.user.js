@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Gcal_ModCSS
 // @description    Gcal ModCSS
-// @version        0.20220904.0
+// @version        0.20240202.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://calendar.google.com/calendar/u/0/*
@@ -15,10 +15,10 @@
 (function() {
     'use strict';
     const css = `
-body, header, .tNDBE, .W0m3G::before, .W0m3G .r4nke, .Kk7lMc-DWWcKd-OomVLb-haAclf, .ULpymb, .J09ahd, .buGMKc, .OCQPo, .Gk2izd, .GENA3c {
+body, header, .tNDBE, .W0m3G::before, .W0m3G .r4nke, .Kk7lMc-DWWcKd-OomVLb-haAclf, .ULpymb, .J09ahd, .buGMKc, .OCQPo, .Gk2izd, .GENA3c, .iGiNKd {
     background-color: #000 !important;
 }
-.JtukPc {
+.JtukPc, .J4VNSd {
     background-color: #111 !important;
 }
 .g3dbUc.smECzc.KKjvXb, .zC2ZSb {
@@ -26,6 +26,15 @@ body, header, .tNDBE, .W0m3G::before, .W0m3G .r4nke, .Kk7lMc-DWWcKd-OomVLb-haAcl
 }
 .mr0WL, .MSZkRb .r4nke, .gb_na, .GXlaye .snByac, .uQ1ixe .snByac, .rSoRzd, .NI2kfb, .HLI7qf .c7fp5b, .Cd9hpd .snByac, .ULpymb .zHQkBf, .gb_na svg, .gb_Hc svg, .gb_3c .gb_5d, .gb_Sc .gb_5d, .wy3aMe, .yzYBvd, .rF3YF, div.rF3YF .NMm5M, div.rF3YF .Ce1Y1c, .SoBqBf, .OWyNBb, .W0m3G, .K2mXPb, .KSxb4d.pCcXPe, .pCoqfc, .MANBAf, .agOyMd .JAPzS, .agOyMd div.DN1TJ {
     color: #fff !important;
+}
+.IOneve .r4nke {
+    background-color: dodgerblue;
+}
+.p6vobf .r4nke, .p6vobf.pWJCO .r4nke, .p6vobf.pWJCO.q2d9Ze .r4nke {
+    background-color: rgb(221 26 232);
+}
+.RAaXne:not(.Wyo4Qe) {
+    background-color: #111;
 }
 .wXaa9 {
     background-color: #222 !important;
@@ -39,8 +48,17 @@ body, header, .tNDBE, .W0m3G::before, .W0m3G .r4nke, .Kk7lMc-DWWcKd-OomVLb-haAcl
 .g3dbUc.qqMC3e {
     color: #000 !important;
 }
+.o5s4T .w48V4c {
+    color: white;
+}
 .g3dbUc.smECzc, .g3dbUc.KCIIIb, .TgcD5e.CCDcoc .zHQkBf, .Kb2sf.CCDcoc .WpDZC, .QJLQUd, .ebs3Ne {
     color: #fff !important;
+}
+.EeuFAf {
+    color: #53a6ff;
+}
+.nHqeVd {
+    color: #7074f1;
 }
 .xWId8e, .MDfQ7, .cAYGed.KKjvXb .Ioup7e, .cAYGed.KKjvXb .BMQm1d {
     background-color: #111 !important;
