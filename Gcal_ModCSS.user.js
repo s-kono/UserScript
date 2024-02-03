@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Gcal_ModCSS
 // @description    Gcal ModCSS
-// @version        0.20240202.0
+// @version        0.20240203.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://calendar.google.com/calendar/u/0/*
@@ -57,8 +57,12 @@ body, header, .tNDBE, .W0m3G::before, .W0m3G .r4nke, .Kk7lMc-DWWcKd-OomVLb-haAcl
 .EeuFAf {
     color: #53a6ff;
 }
-.nHqeVd {
-    color: #7074f1;
+span.nHqeVd:has(span.DvyQhe.BdCDHc) {
+    color: yellow;
+}
+span.nHqeVd:not(:has(span.DvyQhe.BdCDHc)) {
+    color: black;
+    font-weight: 600;
 }
 .xWId8e, .MDfQ7, .cAYGed.KKjvXb .Ioup7e, .cAYGed.KKjvXb .BMQm1d {
     background-color: #111 !important;
