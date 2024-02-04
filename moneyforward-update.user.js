@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           moneyforward-update
 // @description    moneyforward auto update
-// @version        0.20231203.0
+// @version        0.20240204.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://moneyforward.com/
@@ -15,6 +15,16 @@
 (function() {
     'use strict';
     const name = 'moneyforward-update';
+
+    const css = `
+body, div, th, p, select {
+    background-color: #dcc !important;
+}
+    `;
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    document.head.appendChild(style);
 
     function formatDate(date) {
         const yyyy = date.getFullYear();
@@ -36,7 +46,18 @@
             console.log('[' + name + '] ' + String(target) + ' update');
             obj.querySelector('ul > li.controls > a[data-method="post"]').click();
         }
-    }, 1000 * 3600 * 9);
+    }, 1000 * 3600 * 3);
+
+    const val_array = new Array();
+    for(const obj of document.querySelectorAll('ul.facilities.accounts-list > li.account li.number')) {
+        val_array.push(obj.innerText.replace(/,/g, ''));
+    }
+    console.log('[' + name + '] ' + val_array);
+    const vals = document.createElement('span');
+    vals.innerText = 'mf ' + val_array;
+    document.querySelector('div.notification').prepend(vals);
+
+    document.querySelector('rect.highcharts-background').setAttribute('fill', '#dcc');
 
     console.log('[' + name + '] set ' + formatDate(new Date()));
 })();
