@@ -24,6 +24,9 @@ div.nH.bkK {
     color: #ddd !important;
     background-color: rgba(51,51,51,0.8) !important;
   }
+  div.at, div.au, div.av, div.hN, div.hO {
+    font-weight: 600;
+  }
 }
     `;
     const style = document.createElement('style');
