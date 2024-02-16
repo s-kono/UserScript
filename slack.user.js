@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           SlackMod
 // @description    slack mod CSS for Dark Theme
-// @version        0.20240212.0
+// @version        0.20240213.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://app.slack.com/client/*
@@ -81,7 +81,6 @@ div[role="presentation"]:hover a.msg-scroll-arrow {
                 document.querySelectorAll('.c-scrollbar__hider')[1].scroll({left: 0, top: 99999999, behavior: 'smooth'});
             });
         }
-
         if(document.querySelectorAll('a#msg-scroll-up').length == 0) {
             const a_msg_up = document.createElement('a');
             a_msg_up.id = 'msg-scroll-up';
@@ -93,33 +92,16 @@ div[role="presentation"]:hover a.msg-scroll-arrow {
                 document.querySelectorAll('.c-scrollbar__hider')[1].scroll({left: 0, top: 0, behavior: 'smooth'});
             });
         }
-
-        console.log('[' + us_name + '] set');
-    }
-
-    let title = '';
-    function changed_title() {
-        set_msgscroll_arrow();
+        console.log('[' + us_name + '] set_msgscroll_arrow');
     }
 
     // init
     setTimeout(function() {
         document.head.appendChild(style);
-        changed_title();
+        set_msgscroll_arrow();
 
         const title_observer = new MutationObserver(function(mutations) {
-            const new_title = document.querySelector('title').innerText;
-
-            const now = new Date();
-            console.log('[' + us_name + '] title_observer [' + formatDate(new Date()) + '] "' + new_title + '"');
-
-            if(title == new_title) {
-                console.log('[' + us_name + '] title_observer: skip (title not changed)');
-                return;
-            }
-            title = new_title;
-
-            changed_title();
+            set_msgscroll_arrow();
         });
         title_observer.observe(document.querySelector('title'), { childList: true, subtree: false, characterData: true, attributes: false });
 
