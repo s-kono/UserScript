@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Gmail_Mod
 // @description    Gmail Mod (CSS for BlackTheme)
-// @version        0.20240210.0
+// @version        0.20240211.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://mail.google.com/mail/u/0/*
@@ -42,6 +42,12 @@ div.nH.bkK {
         if(obj.getAttribute('data-saferedirecturl') != null) {
           console.log('[Gmail_ModCSS] remove: ' + obj.getAttribute('data-saferedirecturl'))
           obj.removeAttribute('data-saferedirecturl');
+        }
+      }
+      for(const font of document.querySelectorAll('div.nH.bkK font')) {
+        const attr = 'color';
+        if(font.hasAttribute(attr)) {
+          font.removeAttribute(attr);
         }
       }
     }, 3000);
