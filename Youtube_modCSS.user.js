@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20231112.1
+// @version        0.20240229.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -110,6 +110,18 @@
 
     ytd-watch-flexy[flexy][js-panel-height_] #chat.ytd-watch-flexy:not([collapsed]) {
         height: 800px;
+    }
+
+  /* for https://update.greasyfork.org/scripts/411442/Flow%20Youtube%20Chat.user.js */
+    span.fyc_chat > span:has(> :nth-child(2)) {
+        border: 0.5rem solid black;
+        background: #fbff47 !important;
+        padding: 0 2.5%;
+        > :nth-child(2) {
+            margin-left: 1.5rem;
+            padding: 0 2rem;
+            background: #24fb86 !important;
+        }
     }
     `;
     const style = document.createElement('style');
