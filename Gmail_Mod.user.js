@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Gmail_Mod
-// @description    Gmail Mod (CSS for BlackTheme)
-// @version        0.20240211.0
+// @description    Gmail Mod (CSS for BlackTheme) jp
+// @version        0.20240302.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://mail.google.com/mail/u/0/*
@@ -14,6 +14,8 @@
 
 (function() {
     'use strict';
+    const us_name = 'Gmail_Mod'
+
     const css = `
 div.nH.bkK {
   a {
@@ -40,7 +42,7 @@ div.nH.bkK {
     setInterval(function() {
       for(const obj of document.querySelectorAll('div.nH.bkK a')) {
         if(obj.getAttribute('data-saferedirecturl') != null) {
-          console.log('[Gmail_ModCSS] remove: ' + obj.getAttribute('data-saferedirecturl'))
+          console.log('[' + us_name + '] remove: ' + obj.getAttribute('data-saferedirecturl'));
           obj.removeAttribute('data-saferedirecturl');
         }
       }
@@ -50,5 +52,19 @@ div.nH.bkK {
           font.removeAttribute(attr);
         }
       }
-    }, 3000);
+    }, 1000 * 3);
+
+    const title_observer = new MutationObserver(function(mutations) {
+        console.log('[' + us_name + '] obs title');
+        setTimeout(function() {
+            // 更新ボタンを遅延押下
+            for(const update of document.querySelectorAll('div.nH.bkK div[role="button"][data-tooltip="更新"][aria-label="更新"]')) {
+                console.log('[' + us_name + '] update.click');
+                update.click();
+            }
+        }, 1000 * 1.5);
+    });
+    setTimeout(function() {
+        title_observer.observe(document.querySelector('title'), { childList: true, subtree: false, characterData: true, attributes: false });
+    }, 1000 * 2);
 })();

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20240229.0
+// @version        0.20240301.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -113,7 +113,7 @@
     }
 
   /* for https://update.greasyfork.org/scripts/411442/Flow%20Youtube%20Chat.user.js */
-    span.fyc_chat > span:has(> :nth-child(2)) {
+    span.fyc_chat > span:has(> :nth-child(2)):not(:has(strong)) {
         border: 0.5rem solid black;
         background: #fbff47 !important;
         padding: 0 2.5%;
