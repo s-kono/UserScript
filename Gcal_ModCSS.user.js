@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Gcal_ModCSS
 // @description    Gcal ModCSS
-// @version        0.20240204.0
+// @version        0.20240303.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://calendar.google.com/calendar/u/0/*
@@ -91,6 +91,10 @@ div.wuX2hf > div[role="columnheader"]:nth-of-type(7) > span {
 }
 div.wuX2hf > div[role="columnheader"]:nth-of-type(8) > span {
     color: red;
+}
+/* Today */
+div:has(> h2.w48V4c.F262Ye) {
+    background-color: #6200ee8f;
 }
     `;
     const style = document.createElement('style');
