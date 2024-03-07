@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           TwitterAgain
 // @description    Twitter favicon Again
-// @version        0.20240217.0
+// @version        0.20240307.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://twitter.com/*
@@ -91,7 +91,7 @@ div[aria-label="タイムライン: 会話"] div[data-testid="cellInnerDiv"]:has
         if(document.head.querySelector('#' + us_name) === null) {
             document.head.appendChild(style);
         }
-        document.querySelector("head > link[rel='shortcut icon']").href = favicon;
+        //document.querySelector("head > link[rel='shortcut icon']").href = favicon;
 
         try {
             title_observer.disconnect();
