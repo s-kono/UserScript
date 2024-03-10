@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Gmail_Mod
 // @description    Gmail Mod (CSS for BlackTheme) jp
-// @version        0.20240302.0
+// @version        0.20240309.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://mail.google.com/mail/u/0/*
@@ -23,8 +23,11 @@ div.nH.bkK {
     text-decoration: underline !important;
   }
   h1, h2, h3, h4, h5, h6, div:not(.at,.au,.av,.hN,.hO), table, tr, td, span, center, p {
-    color: #ddd !important;
-    background-color: rgba(51,51,51,0.8) !important;
+      color: #ddd !important;
+      background-color: rgba(51,51,51,0.8) !important;
+    font {
+      color: #ddd !important;
+    }
   }
   div.at, div.au, div.av, div.hN, div.hO {
     font-weight: 500;

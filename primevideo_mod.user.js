@@ -2,7 +2,7 @@
 // @name           primevideo_mod
 // @namespace      github.com/s-kono
 // @description    primevideo mod
-// @version        0.20230218.0
+// @version        0.20230309.0
 // @grant          none
 // @match          https://www.amazon.co.jp/gp/video/detail/*
 // @run-at         document-idle
@@ -19,7 +19,7 @@
     const print_title = "[primevideo_mod]";
 
     setInterval(function() {
-        if (document.querySelector('[aria-label="Play"]')) {
+        if (document.querySelector('div#dv-web-player.dv-player-fullscreen') === null) {
             return;
         }
 
