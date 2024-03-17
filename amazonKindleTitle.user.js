@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           amazonKindleTitle
 // @description    amazon Kindle Title
-// @version        0.20240203.0
+// @version        0.20240316.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://read.amazon.co.jp/*
@@ -14,8 +14,13 @@
 
 (function() {
     'use strict';
+    function toHalfWidth(val){
+        return val.replace(/[！-～]/g, function(str) {
+            return String.fromCharCode(str.charCodeAt(0) - 0xFEE0);
+        }).replace(/”/g, '"').replace(/’/g, "'").replace(/‘/g, '`').replace(/￥/g, '\\').replace(/　/g, ' ').replace(/〜/g, '~');
+    }
     function func() {
-        document.querySelector('title').textContent = document.querySelector('meta[property="og:title"]').getAttribute('content');
+        document.querySelector('title').textContent = toHalfWidth(document.querySelector('meta[property="og:title"]').getAttribute('content'));
     }
     setTimeout(function() {
         func();
