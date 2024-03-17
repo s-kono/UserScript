@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Amazon_modTitle
 // @description    Amazon mod Title
-// @version        0.20230731.0
+// @version        0.20240316.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @grant          none
@@ -14,10 +14,15 @@
 
 (function() {
     'use strict';
+    function toHalfWidth(val){
+        return val.replace(/[！-～]/g, function(str) {
+            return String.fromCharCode(str.charCodeAt(0) - 0xFEE0);
+        }).replace(/”/g, '"').replace(/’/g, "'").replace(/‘/g, '`').replace(/￥/g, '\\').replace(/　/g, ' ').replace(/〜/g, '~');
+    }
     if ( location.href.match(/\/progress-tracker\/package\//) ) {
         const id = location.href.match(/\/progress-tracker\/package\/.*orderId=([^&]+)/);
-        document.querySelector('title').innerText = "配送: " + document.querySelector('span#primaryStatus').innerText + ' ' + id[1];
+        document.querySelector('title').innerText = toHalfWidth("配送: " + document.querySelector('span#primaryStatus').innerText + ' ' + id[1]);
     } else {
-        document.querySelector('title').innerText = document.querySelector('title').innerText.replace(/^Amazon.co.jp:? ?/, '');
+        document.querySelector('title').innerText = toHalfWidth(document.querySelector('title').innerText.replace(/^Amazon.co.jp ?:? ?/, ''));
     }
 })();
