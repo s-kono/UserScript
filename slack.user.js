@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           SlackMod
 // @description    slack mod CSS for Dark Theme
-// @version        0.20240213.0
+// @version        0.20240318.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://app.slack.com/client/*
@@ -70,6 +70,8 @@ div[role="presentation"]:hover a.msg-scroll-arrow {
   //document.head.appendChild(style);
 
     function set_msgscroll_arrow() {
+        document.querySelector('title').innerText = document.querySelector('title').innerText.replace(/^チャンネル : /, '');
+
         if(document.querySelectorAll('a#msg-scroll-down').length == 0) {
             const a_msg_down = document.createElement('a');
             a_msg_down.id = 'msg-scroll-down';
@@ -101,7 +103,9 @@ div[role="presentation"]:hover a.msg-scroll-arrow {
         set_msgscroll_arrow();
 
         const title_observer = new MutationObserver(function(mutations) {
+            title_observer.disconnect();
             set_msgscroll_arrow();
+            title_observer.observe(document.querySelector('title'), { childList: true, subtree: false, characterData: true, attributes: false });
         });
         title_observer.observe(document.querySelector('title'), { childList: true, subtree: false, characterData: true, attributes: false });
 
