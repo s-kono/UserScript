@@ -22,7 +22,7 @@
     function func() {
         document.querySelector('title').textContent = toHalfWidth(document.querySelector('meta[property="og:title"]').getAttribute('content'));
     }
-    setTimeout(function() {
+    setTimeout(() => {
         func();
     }, 1500);
 })();

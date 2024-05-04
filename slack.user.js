@@ -98,7 +98,7 @@ div[role="presentation"]:hover a.msg-scroll-arrow {
     }
 
     // init
-    setTimeout(function() {
+    setTimeout(() => {
         document.head.appendChild(style);
         set_msgscroll_arrow();
 

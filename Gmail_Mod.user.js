@@ -59,7 +59,7 @@ div.nH.bkK {
 
     const title_observer = new MutationObserver(function(mutations) {
         console.log('[' + us_name + '] obs title');
-        setTimeout(function() {
+        setTimeout(() => {
             // 更新ボタンを遅延押下
             for(const update of document.querySelectorAll('div.nH.bkK div[role="button"][data-tooltip="更新"][aria-label="更新"]')) {
                 console.log('[' + us_name + '] update.click');
@@ -67,7 +67,7 @@ div.nH.bkK {
             }
         }, 1000 * 1.5);
     });
-    setTimeout(function() {
+    setTimeout(() => {
         title_observer.observe(document.querySelector('title'), { childList: true, subtree: false, characterData: true, attributes: false });
     }, 1000 * 2);
 })();

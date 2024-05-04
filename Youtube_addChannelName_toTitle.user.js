@@ -36,10 +36,10 @@
             pre_title = b;
         }
     }
-    setTimeout(function() {
+    setTimeout(() => {
         const title_observer = new MutationObserver(function (mutations) {
             if (location.href.match(/\/watch/)) {
-                setTimeout(function() {
+                setTimeout(() => {
                     // title_observer.disconnect();
                     addChannelName();
                     // title_observer.observe(document.querySelector('title'), { childList: true, subtree: false, characterData: false, attributes: false });

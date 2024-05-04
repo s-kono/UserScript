@@ -64,7 +64,7 @@
         btn_rewind30.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime -= 30;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
@@ -78,7 +78,7 @@
         btn_forward30.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime += 30;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);

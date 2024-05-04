@@ -28,7 +28,7 @@ div.row {
     document.head.appendChild(style);
 
     $(function() {
-      setTimeout(function() {
+      setTimeout(() => {
         // need allow autoplay(unmuted) in Browser
         $('button.vjs-big-play-button').click();
 
@@ -52,7 +52,7 @@ div.row {
         btn_back.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime -= 10;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
                 console.log("[microsoftstream] playbackRate:", video.playbackRate);
             }, 1500);
@@ -66,7 +66,7 @@ div.row {
         btn_forward.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime += 10;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
                 console.log("[microsoftstream] playbackRate:", video.playbackRate);
             }, 1500);

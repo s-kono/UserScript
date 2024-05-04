@@ -77,7 +77,7 @@ div[aria-label="タイムライン: 会話"] div[data-testid="cellInnerDiv"]:has
             console.log('[' + us_name + '] <' + formatDate(new Date()) + '> mod(): set feed_observer');
         } catch(e) {
             console.log('[' + us_name + '] <' + formatDate(new Date()) + '> mod():feed_observer.observe().error!!!!!!!!!: ' + String(e.message));
-            setTimeout(function() {
+            setTimeout(() => {
                 mod();
             }, 1000);
             return;
@@ -110,13 +110,13 @@ div[aria-label="タイムライン: 会話"] div[data-testid="cellInnerDiv"]:has
             console.log('[' + us_name + '] <' + formatDate(new Date()) + '> init(): set title_observer');
         } catch(e) {
             console.log('[' + us_name + '] <' + formatDate(new Date()) + '> init().error: ' + String(e.message));
-            setTimeout(function() {
+            setTimeout(() => {
                 init();
             }, 500);
             return;
         }
 
-        setTimeout(function() {
+        setTimeout(() => {
             mod();
         }, 500);
     }

@@ -35,7 +35,7 @@ body, div, th, p, select {
     }
 
   //setInterval(function() {
-    setTimeout(function() {
+    setTimeout(() => {
         console.log('[' + name + '] ' + formatDate(new Date()) + ' trigger');
         for(const obj of document.querySelectorAll('ul.facilities.accounts-list > li.account')) {
             const target = obj.querySelector('div.heading-accounts > a').innerText;

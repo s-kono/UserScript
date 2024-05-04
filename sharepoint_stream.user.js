@@ -39,7 +39,7 @@
         btn_back30s.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime -= 30;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
             }, 200);
         });
@@ -53,7 +53,7 @@
         btn_forward30s.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime += 30;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
             }, 200);
         });
@@ -69,7 +69,7 @@
         btn_back60s.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime -= 60;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
             }, 200);
         });
@@ -83,7 +83,7 @@
         btn_forward60s.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime += 60;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
             }, 200);
         });
@@ -99,7 +99,7 @@
         btn_back10m.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime -= 10*60;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
             }, 200);
         });
@@ -113,7 +113,7 @@
         btn_forward10m.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime += 10*60;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
             }, 200);
         });
@@ -138,7 +138,7 @@
             return;
         }
         clearInterval(timer);
-        setTimeout(function() {
+        setTimeout(() => {
             set();
         }, 300);
     }, 100);

@@ -16,7 +16,7 @@
 
 (function() {
     'use strict';
-    setTimeout(function() {
+    setTimeout(() => {
         $('button.vjs-big-play-button').click();
         const audioCtx = new AudioContext();
         const source = audioCtx.createMediaElementSource(document.querySelector('video'));
@@ -24,7 +24,7 @@
         gainNode.gain.value = 2;
         source.connect(gainNode);
         gainNode.connect(audioCtx.destination);
-        setTimeout(function() {
+        setTimeout(() => {
             document.querySelector('video').playbackRate = 2.1;
         }, 1000);
     }, 3000);

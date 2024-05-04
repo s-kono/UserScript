@@ -18,7 +18,7 @@
     const def_gain = 1;
     const print_title = "[YouTube_mod]";
 
-    setTimeout(function() {
+    setTimeout(() => {
         const video = document.querySelector('video');
         const audioCtx = new AudioContext();
         const source = audioCtx.createMediaElementSource(video);
@@ -38,7 +38,7 @@
         btn_rewind10.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime -= 10;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
@@ -53,7 +53,7 @@
         btn_forward10.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime += 10;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
@@ -68,7 +68,7 @@
         btn_rewind30.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime -= 30;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
@@ -83,7 +83,7 @@
         btn_forward30.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime += 30;
-            setTimeout(function() {
+            setTimeout(() => {
                 video.playbackRate = playrate;
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);

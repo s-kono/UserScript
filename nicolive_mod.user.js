@@ -16,7 +16,7 @@
 
     const def_gain = 1.5;
 
-    setTimeout(function() {
+    setTimeout(() => {
         const video = document.querySelector('video');
         const audioCtx = new AudioContext();
         const source = audioCtx.createMediaElementSource(video);
