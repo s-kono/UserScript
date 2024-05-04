@@ -2,7 +2,7 @@
 // @name           Amazon_urlParameterTrimming
 // @namespace      github.com/s-kono
 // @description    Amazon URL Parameter Trimming
-// @version        0.20230402.0
+// @version        0.20240503.0
 // @match          https://www.amazon.co.jp/*
 // @exclude        https://www.amazon.co.jp/*buy*
 // @exclude        https://www.amazon.co.jp/*handle-buy-box*
@@ -33,6 +33,10 @@
             n_url = RegExp.$1 + '/dp/' + RegExp.$2 + RegExp.$3;
             if ( log_flag > 0 ) console.log(tag, "i10:", o_url, ">", n_url);
         }
+        if ( o_url.match( /^(https:\/\/www\.amazon\.co\.jp\/.+)\/ref=[A-z0-9_]+$/ ) ) {
+            n_url = RegExp.$1;
+            if ( log_flag > 0 ) console.log(tag, "i12:", o_url, ">", n_url);
+        }
         last();
     }
     function last() {
@@ -43,3 +47,4 @@
         }
     }
 })();
+
