@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20240301.0
+// @version        0.20240522.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -67,6 +67,9 @@
         padding: 12px 5px 12px 10px;
         margin: 6px 0 10px 6px;
         background: #000877 !important;
+        #message.yt-live-chat-text-message-renderer {
+            color: #46fff6;
+        }
     }
 
     yt-live-chat-text-message-renderer:has(> div#content span#chip-badges > yt-live-chat-author-badge-renderer[aria-label="確認済み"]) {
