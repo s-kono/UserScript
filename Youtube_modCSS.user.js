@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20240522.0
+// @version        0.20240801.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -78,6 +78,16 @@
         padding: 12px 5px 12px 10px;
         margin: 6px 0 10px 6px;
         background: #276900;
+    }
+
+    #timestamp.yt-live-chat-text-message-renderer {
+        color: #fcc9ff;
+    }
+    .yt-simple-endpoint {
+        color: greenyellow;
+    }
+    .yt-simple-endpoint:hover {
+        color: yellow;
     }
 
   /* auth? */
