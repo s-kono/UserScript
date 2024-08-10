@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20230729.0
+// @version        0.20240809.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -10,7 +10,6 @@
 // @icon           https://www.youtube.com/s/desktop/435d54f2/img/favicon_144x144.png
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_addChannelName_toTitle.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_addChannelName_toTitle.user.js
-// @require        https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.slim.min.js
 // ==/UserScript==
 
 (function() {
@@ -19,25 +18,26 @@
     let pre_title = '';
     function addChannelName() {
         console.log("[Youtube_addChannelName_toTitle] addChannelName()");
-        for(const ch_name of $('#upload-info yt-formatted-string.ytd-channel-name')) {
-            const head_title = $('head > title')[0];
-            const a = head_title.innerText;
-            if(a == pre_title) {
-                continue;
+        for(const chname of document.querySelectorAll('body span[itemprop="author"] > link[itemprop="name"]')) {
+            const chname_string = chname.getAttribute('content');
+            const head_title = document.querySelector('head > title');
+            const a_string = head_title.innerText;
+            if(a_string == pre_title) {
+                return;
             }
             console.log("[Youtube_addChannelName_toTitle] pre_title: ", pre_title);
-            console.log("[Youtube_addChannelName_toTitle]         a: ", a);
-            const b = String(head_title.innerText).replace(/ - YouTube$/, '') + " : " + String(ch_name.innerText) + " - YouTube";
-            if(a == b) {
-                continue;
+            console.log("[Youtube_addChannelName_toTitle]         a: ", a_string);
+            const b_string = String(head_title.innerText).replace(/ - YouTube$/, '') + " : " + String(chname_string) + " - YouTube";
+            if(a_string == b_string) {
+                return;
             }
-            console.log("[Youtube_addChannelName_toTitle]         b: ", b);
-            head_title.innerText = b;
-            pre_title = b;
+            console.log("[Youtube_addChannelName_toTitle]         b: ", b_string);
+            head_title.innerText = b_string;
+            pre_title = b_string;
         }
     }
     setTimeout(() => {
-        const title_observer = new MutationObserver(function (mutations) {
+        const title_observer = new MutationObserver(function(mutations) {
             if (location.href.match(/\/watch/)) {
                 setTimeout(() => {
                     // title_observer.disconnect();
@@ -52,3 +52,4 @@
         }
     }, 4000);
 })();
+
