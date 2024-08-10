@@ -2,14 +2,14 @@
 // @name           Amazon_urlParameterTrimming
 // @namespace      github.com/s-kono
 // @description    Amazon URL Parameter Trimming
-// @version        0.20240503.0
+// @version        0.20240809.0
 // @match          https://www.amazon.co.jp/*
-// @exclude        https://www.amazon.co.jp/*buy*
+// @exclude        https://www.amazon.co.jp/*/buy/*
+// @exclude        https://www.amazon.co.jp/*/cart/*
+// @exclude        https://www.amazon.co.jp/*/handlers/*
 // @exclude        https://www.amazon.co.jp/*handle-buy-box*
-// @exclude        https://www.amazon.co.jp/*handlers*
 // @exclude        https://www.amazon.co.jp/*thank-you*
 // @exclude        https://www.amazon.co.jp/*thankYouPage*
-// @exclude        https://www.amazon.co.jp/*tracks*
 // @icon           https://www.google.com/s2/favicons?sz=64&domain=www.amazon.co.jp
 // @grant          none
 // @run-at         document-start
