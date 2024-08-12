@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20240809.0
+// @version        0.20240811.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -18,8 +18,8 @@
     let pre_title = '';
     function addChannelName() {
         console.log("[Youtube_addChannelName_toTitle] addChannelName()");
-        for(const chname of document.querySelectorAll('body span[itemprop="author"] > link[itemprop="name"]')) {
-            const chname_string = chname.getAttribute('content');
+        for(const chname of document.querySelectorAll('div#columns div#upload-info ytd-channel-name#channel-name yt-formatted-string a')) {
+            const chname_string = chname.textContent;
             const head_title = document.querySelector('head > title');
             const a_string = head_title.innerText;
             if(a_string == pre_title) {
