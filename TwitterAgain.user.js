@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           TwitterAgain
-// @description    Twitter favicon Again
-// @version        0.20240517.0
+// @description    Twitter favicon Again [JP]
+// @version        0.20240831.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://twitter.com/*
@@ -58,9 +58,9 @@ div[aria-label="タイムライン: 会話"] div[data-testid="cellInnerDiv"]:has
     function mod() {
         console.log('[' + us_name + '] <' + formatDate(new Date()) + '> mod()');
 
-        for(const div of document.querySelectorAll('div[data-testid="cellInnerDiv"] div[role="button"]')) {
-            if(div.innerText.match(/返信を表示|返信をさらに表示/)){
-                div.click();
+        for(const button of document.querySelectorAll('div[data-testid="cellInnerDiv"] button')) {
+            if(button.innerText.match(/返信を表示|返信をさらに表示/)){
+                button.click();
             }
         }
 
@@ -124,3 +124,4 @@ div[aria-label="タイムライン: 会話"] div[data-testid="cellInnerDiv"]:has
 
     init();
 })();
+
