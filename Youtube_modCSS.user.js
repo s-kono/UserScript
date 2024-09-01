@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20240801.0
+// @version        0.20240831.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -20,6 +20,15 @@
       height: 10px !important;
   }
 
+  ytd-rich-item-renderer:has(div.badge[aria-label="確認済み"]), ytd-rich-item-renderer:has(div.badge[aria-label="公式アーティスト チャンネル"]), ytd-compact-video-renderer:has(div.badge[aria-label="確認済み"]), ytd-compact-video-renderer:has(div.badge[aria-label="公式アーティスト チャンネル"]) {
+      border: 3px solid #00bf00;
+      border-radius: 15px;
+  }
+  ytd-rich-item-renderer:has(button[aria-label="通知がオンです"]), ytd-compact-video-renderer:has(button[aria-label="通知がオンです"]) {
+      background-color: #4e5b29;
+  }
+
+
 /* (非動画再生 view) 再生済位置バー */
   ytd-thumbnail-overlay-resume-playback-renderer {
       height: 10px;
@@ -36,6 +45,12 @@
   ytd-video-owner-renderer[watch-metadata-refresh] {
       min-width: unset;
   }
+
+/* 再生画面 右列動画リスト */
+ytd-compact-video-renderer:has(div[aria-label="メンバー限定"]) {
+    /* border: 1px solid red; */
+    visibility: hidden;
+}
 
 /* チャットログ */
   div#content > yt-live-chat-author-chip {
@@ -142,3 +157,4 @@
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 })();
+
