@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name           Gcal_ModCSS
 // @description    Gcal ModCSS
-// @version        0.20240831.0
+// @version        0.20240091.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://calendar.google.com/calendar/u/0/*
+// @exclude        https://calendar.google.com/calendar/u/0/r/week
 // @grant          none
 // @run-at         document-idle
 // @icon           https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Google_Calendar_icon_%282020%29.svg/2048px-Google_Calendar_icon_%282020%29.svg.png
@@ -102,6 +103,21 @@ div:has(> span.nHqeVd > span.WBi6vc):hover {
 /* Today */
 div:has(> h2.w48V4c.F262Ye) {
     background-color: #6200ee8f;
+}
+
+/* for Saturday (Starts on Monday) */
+div.wuX2hf > div[role="columnheader"]:nth-of-type(7) {
+    background-color: #004167;
+}
+div[role="presentation"] > div[role="row"] > div > div:nth-of-type(6) {
+    background-color: #004167;
+}
+/* for Sunday (Starts on Monday) */
+div.wuX2hf > div[role="columnheader"]:nth-of-type(8) {
+    background-color: #830042;
+}
+div[role="presentation"] > div[role="row"] > div > div:nth-of-type(7) {
+    background-color: #830042;
 }
     `;
     const style = document.createElement('style');
