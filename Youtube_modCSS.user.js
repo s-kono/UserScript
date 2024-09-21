@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20240831.0
+// @version        0.20240920.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -23,6 +23,10 @@
   ytd-rich-item-renderer:has(div.badge[aria-label="確認済み"]), ytd-rich-item-renderer:has(div.badge[aria-label="公式アーティスト チャンネル"]), ytd-compact-video-renderer:has(div.badge[aria-label="確認済み"]), ytd-compact-video-renderer:has(div.badge[aria-label="公式アーティスト チャンネル"]) {
       border: 3px solid #00bf00;
       border-radius: 15px;
+      margin: 3px;
+      div#content:has(div.badge[aria-label="ライブ"]) {
+          background-color: #549;
+      }
   }
   ytd-rich-item-renderer:has(button[aria-label="通知がオンです"]), ytd-compact-video-renderer:has(button[aria-label="通知がオンです"]) {
       background-color: #4e5b29;
