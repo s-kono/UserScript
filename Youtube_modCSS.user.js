@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20240921.0
+// @version        0.20240922.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -18,6 +18,13 @@
     const css = `
   .ytp-progress-bar-container {
       height: 10px !important;
+  }
+
+  yt-tab-shape[tab-title="動画"], yt-tab-shape[tab-title="ライブ"] {
+      background-color: #5222e5;
+      color: black;
+      border-radius: 8px 8px 0 0;
+      padding: 0 5px;
   }
 
   ytd-rich-item-renderer:has(div.badge[aria-label="確認済み"]), ytd-rich-item-renderer:has(div.badge[aria-label="公式アーティスト チャンネル"]), ytd-compact-video-renderer:has(div.badge[aria-label="確認済み"]), ytd-compact-video-renderer:has(div.badge[aria-label="公式アーティスト チャンネル"]) {
