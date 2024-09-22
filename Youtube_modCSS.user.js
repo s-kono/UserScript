@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_modCSS
 // @description    Youtube : mod CSS
-// @version        0.20240920.0
+// @version        0.20240921.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -24,6 +24,8 @@
       border: 3px solid #00bf00;
       border-radius: 15px;
       margin: 3px;
+  }
+  ytd-rich-item-renderer, ytd-compact-video-renderer {
       div#content:has(div.badge[aria-label="ライブ"]) {
           background-color: #549;
       }
