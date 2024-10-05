@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20240811.0
+// @version        0.20241004.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
-// @match          https://www.youtube.com/*
+// @match          https://www.youtube.com/watch*
 // @grant          none
 // @run-at         document-idle
 // @icon           https://www.youtube.com/s/desktop/435d54f2/img/favicon_144x144.png
