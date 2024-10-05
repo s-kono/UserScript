@@ -1,2 +1,0 @@
-https://github.com/kphrx/ZenzaWatch/blob/playlist-deploy/dist/ZenzaWatch-dev.user.js
-https://github.com/kphrx/ZenzaWatch/raw/playlist-deploy/dist/ZenzaWatch-dev.user.js
