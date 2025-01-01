@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Gcal_ModCSS
 // @description    Gcal ModCSS
-// @version        0.20240091.0
+// @version        0.20240901.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://calendar.google.com/calendar/u/0/*

@@ -1,14 +1,14 @@
 // ==UserScript==
-// @name           Youtube_mod
+// @name           Youtube_VideoControl
 // @namespace      github.com/s-kono
-// @description    Youtube mod
-// @version        0.20230205.0
+// @description    Youtube VideoControl
+// @version        0.20241231.0
 // @grant          none
 // @match          https://www.youtube.com/watch*
 // @run-at         document-idle
 // @icon           https://www.youtube.com/s/desktop/435d54f2/img/favicon_144x144.png
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_mod.user.js
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_mod.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_VideoControl.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_VideoControl.user.js
 // ==/UserScript==
 
 (function() {
@@ -16,7 +16,7 @@
 
     const def_speed = 2.2;
     const def_gain = 1;
-    const print_title = "[YouTube_mod]";
+    const print_title = "[Youtube_VideoControl]";
 
     setTimeout(() => {
         const video = document.querySelector('video');
@@ -105,3 +105,4 @@
         console.log(print_title);
     }, 2000);
 })();
+

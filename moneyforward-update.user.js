@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           moneyforward-update
 // @description    moneyforward auto update
-// @version        0.20240204.0
+// @version        0.20241231.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://moneyforward.com/
@@ -34,8 +34,8 @@ body, div, th, p, select {
         return (yyyy + '-' + mm + '-' + dd + ' ' + hhmmss);
     }
 
-  //setInterval(function() {
-    setTimeout(() => {
+  //setTimeout(() => {
+    setInterval(() => {
         console.log('[' + name + '] ' + formatDate(new Date()) + ' trigger');
         for(const obj of document.querySelectorAll('ul.facilities.accounts-list > li.account')) {
             const target = obj.querySelector('div.heading-accounts > a').innerText;
@@ -61,3 +61,4 @@ body, div, th, p, select {
 
     console.log('[' + name + '] set ' + formatDate(new Date()));
 })();
+
