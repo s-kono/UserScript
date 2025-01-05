@@ -71,3 +71,4 @@ div.nH.bkK {
         title_observer.observe(document.querySelector('title'), { childList: true, subtree: false, characterData: true, attributes: false });
     }, 1000 * 2);
 })();
+
