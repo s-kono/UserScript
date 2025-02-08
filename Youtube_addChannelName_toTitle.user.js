@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20241005.0
+// @version        0.20250201.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://www.youtube.com/*
@@ -49,7 +49,11 @@
                 }, 4000);
           //}
         });
-        title_observer.observe(document.querySelector('title'), obs_config);
+        try {
+          title_observer.observe(document.querySelector('title'), obs_config);
+        } catch(e) {
+          console.log('[' + us_name + '] failset title_observer.observe():' + e);
+        }
         if(location.href.match(/\/watch/)) {
             addChannelName();
         }

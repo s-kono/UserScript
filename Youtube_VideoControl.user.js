@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name           Youtube_VideoControl
 // @namespace      github.com/s-kono
-// @description    Youtube VideoControl x2.2
-// @version        0.20250116.0
+// @description    Youtube VideoControl [jp] x2.3
+// @version        0.20250207.0
 // @grant          none
 // @match          https://www.youtube.com/*
 // @run-at         document-idle
@@ -17,6 +17,11 @@
     let url = '';
 
     const css = `
+span.ytp-time-wrapper {
+  display: inline-block;
+  min-width: 280px;
+}
+
 button.Youtube_VideoControl {
   background: transparent;
   border:none;
@@ -42,16 +47,17 @@ button.Youtube_VideoControl:hover {
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 
-    const def_speed = 2.2;
+    const def_speed = 2.3;
     const def_gain = 1;
     const print_title = '[' + us_name + '] ';
+    const tooltip_path = 'div#content div#columns div#primary div#description div#tooltip';
 
     function main() {
         if(document.getElementsByClassName(us_name).length > 0) {
             console.log(print_title + 'main() configured');
             if(url != location.href) {
                 const video = document.querySelector('video');
-                if(document.querySelector('div#content div#columns div#primary div#description div#tooltip').innerText.match('人が視聴中')){
+                if(document.querySelector(tooltip_path) && document.querySelector(tooltip_path).innerText.match('人が視聴中')){
                     console.log(print_title + 'now streaming');
                     video.playbackRate = 1;
                 } else {
@@ -70,7 +76,7 @@ button.Youtube_VideoControl:hover {
         //gainNode.gain.value = def_gain;
         source.connect(gainNode);
         gainNode.connect(audioCtx.destination);
-        if(document.querySelector('div#content div#columns div#primary div#description div#tooltip').innerText.match('人が視聴中')){
+        if(document.querySelector(tooltip_path) && document.querySelector(tooltip_path).innerText.match('人が視聴中')){
             console.log(print_title + 'now streaming');
             video.playbackRate = 1;
         } else {
@@ -79,7 +85,9 @@ button.Youtube_VideoControl:hover {
         let playrate;
         const ctlbar_left = document.querySelector('div.ytp-left-controls');
 
-        ctlbar_left.classList.add(us_name);
+        const group_ctl = document.createElement('div');
+        group_ctl.classList.add(us_name);
+        ctlbar_left.appendChild(group_ctl);
 
     // sec
         const btn_rewind20s = document.createElement('button');
@@ -100,7 +108,7 @@ button.Youtube_VideoControl:hover {
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
-        ctlbar_left.appendChild(btn_rewind20s);
+        group_ctl.appendChild(btn_rewind20s);
 
         const btn_forward20s = document.createElement('button');
         btn_forward20s.classList.add(us_name);
@@ -120,7 +128,7 @@ button.Youtube_VideoControl:hover {
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
-        ctlbar_left.appendChild(btn_forward20s);
+        group_ctl.appendChild(btn_forward20s);
 
         const btn_rewind60s = document.createElement('button');
         btn_rewind60s.classList.add(us_name);
@@ -140,7 +148,7 @@ button.Youtube_VideoControl:hover {
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
-        ctlbar_left.appendChild(btn_rewind60s);
+        group_ctl.appendChild(btn_rewind60s);
 
         const btn_forward60s = document.createElement('button');
         btn_forward60s.classList.add(us_name);
@@ -160,7 +168,7 @@ button.Youtube_VideoControl:hover {
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
-        ctlbar_left.appendChild(btn_forward60s);
+        group_ctl.appendChild(btn_forward60s);
 
     // min
         const btn_rewind5m = document.createElement('button');
@@ -181,7 +189,7 @@ button.Youtube_VideoControl:hover {
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
-        ctlbar_left.appendChild(btn_rewind5m);
+        group_ctl.appendChild(btn_rewind5m);
 
         const btn_forward5m = document.createElement('button');
         btn_forward5m.classList.add(us_name);
@@ -201,7 +209,7 @@ button.Youtube_VideoControl:hover {
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
-        ctlbar_left.appendChild(btn_forward5m);
+        group_ctl.appendChild(btn_forward5m);
 
         const btn_rewind20m = document.createElement('button');
         btn_rewind20m.classList.add(us_name);
@@ -221,7 +229,7 @@ button.Youtube_VideoControl:hover {
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
-        ctlbar_left.appendChild(btn_rewind20m);
+        group_ctl.appendChild(btn_rewind20m);
 
         const btn_forward20m = document.createElement('button');
         btn_forward20m.classList.add(us_name);
@@ -241,7 +249,7 @@ button.Youtube_VideoControl:hover {
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
-        ctlbar_left.appendChild(btn_forward20m);
+        group_ctl.appendChild(btn_forward20m);
 
         const btn_rewind60m = document.createElement('button');
         btn_rewind60m.classList.add(us_name);
@@ -261,7 +269,7 @@ button.Youtube_VideoControl:hover {
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
-        ctlbar_left.appendChild(btn_rewind60m);
+        group_ctl.appendChild(btn_rewind60m);
 
         const btn_forward60m = document.createElement('button');
         btn_forward60m.classList.add(us_name);
@@ -281,7 +289,7 @@ button.Youtube_VideoControl:hover {
                 console.log(print_title, "playbackRate:", video.playbackRate);
             }, 1500);
         });
-        ctlbar_left.appendChild(btn_forward60m);
+        group_ctl.appendChild(btn_forward60m);
 
         const range = document.createElement('input');
         range.classList.add(us_name);
@@ -305,7 +313,7 @@ button.Youtube_VideoControl:hover {
             gainNode.gain.value = def_gain + (range['valueAsNumber'] / 100);
             console.log(print_title, "gain.value:", gainNode.gain.value);
         };
-        ctlbar_left.appendChild(range);
+        group_ctl.appendChild(range);
 
         console.log(print_title);
     }
@@ -319,7 +327,11 @@ button.Youtube_VideoControl:hover {
                 }, 3000);
             }
         });
-        title_observer.observe(document.querySelector('title'), obs_config);
+        try {
+          title_observer.observe(document.querySelector('title'), obs_config);
+        } catch(e) {
+          console.log('[' + us_name + '] failset title_observer.observe():' + e);
+        }
         if(location.href.match(/\/watch/)) {
             main();
         }
