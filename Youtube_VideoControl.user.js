@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name           Youtube_VideoControl
 // @namespace      github.com/s-kono
-// @description    Youtube VideoControl [jp] x2.3
-// @version        0.20250207.0
+// @description    Youtube VideoControl x2.3
+// @version        0.20250505.0
 // @grant          none
 // @match          https://www.youtube.com/*
 // @run-at         document-idle
@@ -14,7 +14,6 @@
 (function() {
     'use strict';
     const us_name = 'Youtube_VideoControl';
-    let url = '';
 
     const css = `
 span.ytp-time-wrapper {
@@ -47,17 +46,19 @@ button.Youtube_VideoControl:hover {
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 
+    let url = '';
     const def_speed = 2.3;
     const def_gain = 1;
     const print_title = '[' + us_name + '] ';
     const tooltip_path = 'div#content div#columns div#primary div#description div#tooltip';
+    let video, audioCtx, source;
 
     function main() {
         if(document.getElementsByClassName(us_name).length > 0) {
             console.log(print_title + 'main() configured');
             if(url != location.href) {
                 const video = document.querySelector('video');
-                if(document.querySelector(tooltip_path) && document.querySelector(tooltip_path).innerText.match('人が視聴中')){
+                if(document.querySelector(tooltip_path) && document.querySelector(tooltip_path).innerText.match(/人が視聴中| watching now/)){
                     console.log(print_title + 'now streaming');
                     video.playbackRate = 1;
                 } else {
@@ -68,15 +69,28 @@ button.Youtube_VideoControl:hover {
             url = location.href;
             return;
         }
+        console.log(print_title + 'main() AAA');
 
-        const video = document.querySelector('video');
-        const audioCtx = new AudioContext();
-        const source = audioCtx.createMediaElementSource(video);
+      try {
+        if(!source) {
+          video = document.querySelector('video');
+          audioCtx = new AudioContext();
+          source = audioCtx.createMediaElementSource(video);
+        }
         const gainNode = audioCtx.createGain();
         //gainNode.gain.value = def_gain;
         source.connect(gainNode);
         gainNode.connect(audioCtx.destination);
-        if(document.querySelector(tooltip_path) && document.querySelector(tooltip_path).innerText.match('人が視聴中')){
+        const tooltip = document.querySelector(tooltip_path);
+        if(!tooltip || !tooltip.innerText) {
+            console.log(print_title + 'tooltip null');
+            setTimeout(() => {
+                console.log(print_title + 'call main(): tooltip null');
+                main();
+            }, 6000);
+            return;
+        }
+        if(tooltip.innerText.match(/人が視聴中| watching now/)){
             console.log(print_title + 'now streaming');
             video.playbackRate = 1;
         } else {
@@ -84,7 +98,6 @@ button.Youtube_VideoControl:hover {
         }
         let playrate;
         const ctlbar_left = document.querySelector('div.ytp-left-controls');
-
         const group_ctl = document.createElement('div');
         group_ctl.classList.add(us_name);
         ctlbar_left.appendChild(group_ctl);
@@ -315,7 +328,11 @@ button.Youtube_VideoControl:hover {
         };
         group_ctl.appendChild(range);
 
-        console.log(print_title);
+      } catch(e) {
+        console.log(print_title + 'main() error:', e);
+      }
+
+        console.log(print_title + 'main() end');
     }
 
     const obs_config = { childList: true, subtree: false, characterData: false, attributes: false };
@@ -323,18 +340,16 @@ button.Youtube_VideoControl:hover {
         const title_observer = new MutationObserver(function(mutations) {
             if(location.href.match(/\/watch/)) {
                 setTimeout(() => {
+                    console.log(print_title + 'main() run from title_observer');
                     main();
-                }, 3000);
+                }, 1500);
             }
         });
-        try {
-          title_observer.observe(document.querySelector('title'), obs_config);
-        } catch(e) {
-          console.log('[' + us_name + '] failset title_observer.observe():' + e);
-        }
+        title_observer.observe(document.querySelector('title'), obs_config);
         if(location.href.match(/\/watch/)) {
+            console.log(print_title + 'main() run init');
             main();
         }
-    }, 3000);
+    }, 2000);
 })();
 
