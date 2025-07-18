@@ -2,7 +2,7 @@
 // @name           microsoftstream
 // @namespace      github.com/s-kono
 // @description    web.microsoftstream.com video
-// @version        0.20221107.0
+// @version        0.20221109.0
 // @grant          none
 // @match          https://web.microsoftstream.com/video/*
 // @run-at         document-idle
@@ -55,6 +55,10 @@ div.row {
             setTimeout(() => {
                 video.playbackRate = playrate;
                 console.log("[microsoftstream] playbackRate:", video.playbackRate);
+            }, 750);
+            setTimeout(() => {
+                video.playbackRate = playrate;
+                console.log("[microsoftstream] playbackRate:", video.playbackRate);
             }, 1500);
         });
         ctlbar_left.appendChild(btn_back);
@@ -66,6 +70,10 @@ div.row {
         btn_forward.addEventListener("click", (e) => {
             playrate = video.playbackRate;
             video.currentTime += 10;
+            setTimeout(() => {
+                video.playbackRate = playrate;
+                console.log("[microsoftstream] playbackRate:", video.playbackRate);
+            }, 750);
             setTimeout(() => {
                 video.playbackRate = playrate;
                 console.log("[microsoftstream] playbackRate:", video.playbackRate);
@@ -87,3 +95,4 @@ div.row {
       }, 6000);
     });
 })();
+
