@@ -2,7 +2,7 @@
 // @name           sharepoint_stream
 // @namespace      github.com/s-kono
 // @description    sharepoint.com stream
-// @version        0.20250108.0
+// @version        0.20250510.0
 // @grant          none
 // @match          https://*.sharepoint.com/*/stream.aspx*
 // @run-at         document-idle
@@ -26,6 +26,17 @@ button.stream_mod.back {
 }
 button.stream_mod.forward {
     margin-left: 1px;
+}
+
+div:has(> button[data-automationid="newMenuCommand"]) {
+    display: none;
+}
+div:has(> button[data-automationid="uploadCommand"]) {
+    display: none;
+}
+/* リアクション */
+div.swa-reactions-picker-container {
+    display: none !important;
 }
     `;
     const style = document.createElement('style');
