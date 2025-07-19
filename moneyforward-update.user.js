@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           moneyforward-update
 // @description    moneyforward auto update
-// @version        0.20241231.0
+// @version        0.20250111.0
 // @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
 // @match          https://moneyforward.com/
@@ -19,6 +19,9 @@
     const css = `
 body, div, th, p, select {
     background-color: #dcc !important;
+}
+img[title="金融機関サービスサイトへ"] {
+    display: none;
 }
     `;
     const style = document.createElement('style');
