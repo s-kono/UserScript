@@ -2,7 +2,7 @@
 // @name           Youtube_Short_mod
 // @namespace      github.com/s-kono
 // @description    Youtube Short mod
-// @version        0.20241231.0
+// @version        0.20250802.0
 // @grant          none
 // @match          https://www.youtube.com/shorts/*
 // @run-at         document-idle
@@ -27,8 +27,8 @@ div#progress-bar-line.ytd-progress-bar-line {
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 
-    const def_speed = 1.5;
-    const def_gain = 0.3;
+    const def_speed = 1.8;
+    const def_gain = 0.5;
     const print_title = "[YouTube_Short_mod]";
 
     const audioCtx = new AudioContext();
