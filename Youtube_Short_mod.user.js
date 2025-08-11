@@ -2,7 +2,7 @@
 // @name           Youtube_Short_mod
 // @namespace      github.com/s-kono
 // @description    Youtube Short mod
-// @version        0.20250803.0
+// @version        0.20250810.0
 // @grant          none
 // @match          https://www.youtube.com/shorts/*
 // @run-at         document-idle
@@ -75,7 +75,7 @@ button[aria-label="再生（k）"] {
     document.head.appendChild(style);
 
     const def_speed = 1.8;
-    const def_gain = 0.5;
+    const def_gain = 0.6;
 
     const audioCtx = new AudioContext();
     const gainNode = audioCtx.createGain();
@@ -95,6 +95,16 @@ button[aria-label="再生（k）"] {
         source.connect(gainNode);
         gainNode.connect(audioCtx.destination);
         video.playbackRate = def_speed;
+
+        const timer_1a = setInterval(() => {
+            if (video.playbackRate !== def_speed) {
+                console.log(`[${us_name}] playbackRate changed (${video.playbackRate} => ${def_speed}), resetting`);
+                video.playbackRate = def_speed;
+            } else {
+                console.log(`[${us_name}] timer_1a clear`);
+                clearInterval(timer_1a);
+            }
+        }, 1500);
     }, 150);
 
     const timer_2 = setInterval(() => {
