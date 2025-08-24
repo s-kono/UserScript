@@ -1,2 +1,0 @@
-https://greasyfork.org/ja/scripts/7251-enhanced-word-highlight/code
-https://greasyfork.org/scripts/7251-enhanced-word-highlight/code/Enhanced%20word%20highlight.user.js

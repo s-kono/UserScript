@@ -1,16 +1,16 @@
 // ==UserScript==
 // @name           video-mod
 // @description    autostart, gain x2, speed x2.1 : tver, abema
-// @version        0.20241231.0
-// @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/video-mod.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/video-mod.user.js
+// @version        0.20241231.0
 // @match          https://tver.jp/episodes/*
 // @match          https://abema.tv/video/episode/*
 // @grant          none
 // @run-at         document-idle
 // @icon           https://tver.jp/favicon.ico
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/video-mod.user.js
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/video-mod.user.js
 // ==/UserScript==
 
 (function() {

@@ -1,20 +1,20 @@
 // ==UserScript==
 // @name           LogTest_30idle
 // @description    LogTest idle // set start,end.idle
-// @version        0.20220904.1
-// @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/LogTest_30idle.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/LogTest_30idle.user.js
+// @version        0.20220904.1
 // @match          <all_urls>
 // @match          *://*/*
 // @grant          none
 // @run-at         document-idle
 // @icon           data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAREREA/wDrAOXl5QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiIiIiIiIiIiIiIiIiIiAAAgAAIAACICIiAiAgIgIgIiICICAiAiAiIgIgICICICIiAiAgIAIgIiICICAiIiAiIgIgICIiICIiAiAgIiIgIiICICAiIiAiIgAAIAACIiIiIiIiIiIiIiIiIiIiIhEREREREREREREREREREREAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/LogTest_30idle.user.js
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/LogTest_30idle.user.js
 // @require        https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js
 // ==/UserScript==
 
-(function () {
+(function() {
     'use strict';
     const name = "LogTest_idle";
 
@@ -47,3 +47,4 @@
 
         console.log(name, ": 999");
 })();
+

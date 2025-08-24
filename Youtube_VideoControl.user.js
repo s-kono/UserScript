@@ -1,15 +1,16 @@
 // ==UserScript==
 // @name           Youtube_VideoControl
-// @namespace      github.com/s-kono
 // @description    Youtube VideoControl x2.3
+// @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_VideoControl.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_VideoControl.user.js
 // @version        0.20250803.0
 // @grant          none
 // @match          https://www.youtube.com/*
 // @exclude        https://www.youtube.com/shorts/*
 // @run-at         document-idle
 // @icon           https://www.google.com/s2/favicons?sz=64&domain=www.youtube.com
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_VideoControl.user.js
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_VideoControl.user.js
 // ==/UserScript==
 
 (function() {
@@ -43,7 +44,6 @@ button.${us_name}:hover {
 }
     `;
     const style = document.createElement('style');
-    style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 

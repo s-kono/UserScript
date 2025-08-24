@@ -1,16 +1,16 @@
 // ==UserScript==
 // @name           Gcal_ModCSS
 // @description    Gcal ModCSS
-// @version        0.20240901.0
-// @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Gcal_ModCSS.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Gcal_ModCSS.user.js
+// @version        0.20240901.0
 // @match          https://calendar.google.com/calendar/u/0/*
 // @exclude        https://calendar.google.com/calendar/u/0/r/week
 // @grant          none
 // @run-at         document-idle
 // @icon           https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Google_Calendar_icon_%282020%29.svg/2048px-Google_Calendar_icon_%282020%29.svg.png
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/Gcal_ModCSS.user.js
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Gcal_ModCSS.user.js
 // ==/UserScript==
 
 (function() {
@@ -121,7 +121,6 @@ div[role="presentation"] > div[role="row"] > div > div:nth-of-type(7) {
 }
     `;
     const style = document.createElement('style');
-    style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 })();

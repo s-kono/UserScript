@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name           twitch_mod
-// @namespace      github.com/s-kono
 // @description    twitch mod
+// @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/twitch_mod.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/twitch_mod.user.js
 // @version        0.20250105.0
 // @grant          none
 // @match          https://www.twitch.tv/*
 // @run-at         document-idle
 // @icon           https://www.google.com/s2/favicons?sz=64&domain=www.twitch.tv
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/twitch_mod.user.js
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/twitch_mod.user.js
 // ==/UserScript==
 
 (function() {
@@ -43,7 +44,6 @@ div.player-controls__left-control-group {
 }
     `;
     const style = document.createElement('style');
-    style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 

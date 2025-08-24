@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name           microsoftstream
-// @namespace      github.com/s-kono
 // @description    web.microsoftstream.com video
+// @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/microsoftstream.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/microsoftstream.user.js
 // @version        0.20221109.0
 // @grant          none
 // @match          https://web.microsoftstream.com/video/*
 // @run-at         document-idle
 // @icon           https://web.microsoftstream.com/favicon.ico
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/microsoftstream.user.js
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/microsoftstream.user.js
 // ==/UserScript==
 
 (function() {
@@ -23,7 +24,6 @@ div.row {
 }
     `;
     const style = document.createElement('style');
-    style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 

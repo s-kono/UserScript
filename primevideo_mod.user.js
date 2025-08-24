@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name           primevideo_mod
-// @namespace      github.com/s-kono
 // @description    primevideo mod
+// @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/primevideo_mod.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/primevideo_mod.user.js
 // @version        0.20230309.0
 // @grant          none
 // @match          https://www.amazon.co.jp/gp/video/detail/*
 // @run-at         document-idle
 // @icon           https://www.google.com/s2/favicons?sz=64&domain=www.amazon.co.jp
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/primevideo_mod.user.js
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/primevideo_mod.user.js
 // ==/UserScript==
 
 (function() {

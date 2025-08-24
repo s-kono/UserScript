@@ -1,7 +1,10 @@
 // ==UserScript==
 // @name           Amazon_urlParameterTrimming
-// @namespace      github.com/s-kono
 // @description    Amazon URL Parameter Trimming
+// @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Amazon_urlParameterTrimming.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Amazon_urlParameterTrimming.user.js
 // @version        0.20240811.0
 // @match          https://www.amazon.co.jp/*
 // @exclude        https://www.amazon.co.jp/a/*
@@ -26,11 +29,9 @@
 // @icon           https://www.google.com/s2/favicons?sz=64&domain=www.amazon.co.jp
 // @grant          none
 // @run-at         document-start
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Amazon_urlParameterTrimming.user.js
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/Amazon_urlParameterTrimming.user.js
 // ==/UserScript==
 
-( function () {
+(function() {
     const tag = "[Amazon_urlParameterTrimming]"
     const log_flag = 1;
     const o_url = location.href;

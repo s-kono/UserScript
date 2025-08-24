@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name           moneyforward-update
 // @description    moneyforward auto update
-// @version        0.20250111.0
-// @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/moneyforward-update.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/moneyforward-update.user.js
+// @version        0.20250111.0
 // @match          https://moneyforward.com/
 // @grant          none
 // @run-at         document-idle
 // @icon           https://assets.moneyforward.com/assets/favicon-710b014dd04a85070bb0a55fa894b599015b5310333d38da9c85ad03594bbc20.ico
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/moneyforward-update.user.js
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/moneyforward-update.user.js
 // ==/UserScript==
 
 (function() {
@@ -25,7 +25,6 @@ img[title="金融機関サービスサイトへ"] {
 }
     `;
     const style = document.createElement('style');
-    style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 

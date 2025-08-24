@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name           Amazon_KindleTitle
 // @description    Amazon Kindle Title
-// @version        0.20250720.0
-// @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Amazon_KindleTitle.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Amazon_KindleTitle.user.js
+// @version        0.20250720.0
 // @match          https://read.amazon.co.jp/*
 // @grant          none
 // @run-at         document-idle
 // @icon           https://www.google.com/s2/favicons?sz=64&domain=www.amazon.com
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/Amazon_KindleTitle.user.js
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Amazon_KindleTitle.user.js
 // ==/UserScript==
 
 (function() {

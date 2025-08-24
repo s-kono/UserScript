@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name           Youtube_addChannelName_toTitle
 // @description    Youtube : add channelname to title
-// @version        0.20250201.0
-// @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_addChannelName_toTitle.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_addChannelName_toTitle.user.js
+// @version        0.20250201.0
 // @match          https://www.youtube.com/*
 // @grant          none
 // @run-at         document-idle
 // @icon           https://www.youtube.com/s/desktop/435d54f2/img/favicon_144x144.png
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_addChannelName_toTitle.user.js
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_addChannelName_toTitle.user.js
 // ==/UserScript==
 
 (function() {

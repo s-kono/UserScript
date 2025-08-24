@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name           Gmail_Mod
 // @description    Gmail Mod (CSS for BlackTheme) jp
-// @version        0.20240309.0
-// @namespace      https://github.com/s-kono/UserScript
 // @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Gmail_Mod.user.js
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Gmail_Mod.user.js
+// @version        0.20240309.0
 // @match          https://mail.google.com/mail/u/0/*
 // @grant          none
 // @run-at         document-idle
 // @icon           https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/1024px-Gmail_icon_%282020%29.svg.png
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/Gmail_Mod.user.js
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Gmail_Mod.user.js
 // ==/UserScript==
 
 (function() {
@@ -38,7 +38,6 @@ div.nH.bkK {
 }
     `;
     const style = document.createElement('style');
-    style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 

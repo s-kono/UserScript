@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name           Youtube_Short_mod
-// @namespace      github.com/s-kono
 // @description    Youtube Short mod
+// @author         github.com/s-kono
+// @namespace      https://github.com/s-kono/UserScript
+// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_Short_mod.user.js
+// @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_Short_mod.user.js
 // @version        0.20250810.0
 // @grant          none
 // @match          https://www.youtube.com/shorts/*
 // @run-at         document-idle
 // @icon           https://www.youtube.com/s/desktop/435d54f2/img/favicon_144x144.png
-// @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_Short_mod.user.js
-// @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_Short_mod.user.js
 // ==/UserScript==
 
 (function() {
@@ -70,7 +71,6 @@ button[aria-label="再生（k）"] {
 }
     `;
     const style = document.createElement('style');
-    style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 
