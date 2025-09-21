@@ -5,7 +5,7 @@
 // @namespace      https://github.com/s-kono/UserScript
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/primevideo_mod.user.js
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/primevideo_mod.user.js
-// @version        0.20230309.0
+// @version        0.20250921.0
 // @grant          none
 // @match          https://www.amazon.co.jp/gp/video/detail/*
 // @run-at         document-idle
@@ -14,22 +14,14 @@
 
 (function() {
     'use strict';
+    const us_name = 'PrimeVideo_mod';
 
     const def_speed = 2.3;
     const def_gain = 1;
-    const print_title = "[primevideo_mod]";
 
-    setInterval(function() {
+    const intervalId = setInterval(() => {
         if (document.querySelector('div#dv-web-player.dv-player-fullscreen') === null) {
-            return;
-        }
-
-        const skip = document.querySelector('div.fu4rd6c.f1cw2swo');
-        if (skip && skip.innerText == 'スキップ') {
-            skip.click();
-        }
-
-        if(document.querySelector('input.UserScript-add-gainrange')) {
+            // video doesn't exist yet
             return;
         }
 
@@ -39,7 +31,7 @@
         }
 
       //const video = document.querySelector('video');
-        const video = document.querySelectorAll('video:not(.tst-video-overlay-player-html5')[0];
+        const video = document.querySelectorAll('video:not(.tst-video-overlay-player-html5')[1];
         const audioCtx = new AudioContext();
         const source = audioCtx.createMediaElementSource(video);
         const gainNode = audioCtx.createGain();
@@ -49,8 +41,6 @@
         video.playbackRate = def_speed;
         let playrate;
 
-      //const target_elem = document.querySelector('div.f3w9jrr.fcckh95');  // video title <div>
-      //const target_elem = document.querySelectorAll('div.fewcsle.fcmecz0')[2]; // volume icon <div>
         const target_elem = document.querySelector('div.atvwebplayersdk-hideabletopbuttons-container.f1kg2fkb'); // 右上ボタン群(字幕・オプション・ボリューム) div, 全画面ボダン div, 区切り div 達の親 div (hide 対象)
 
         const parts_div = document.createElement('div');
@@ -67,7 +57,7 @@
             video.currentTime -= 30;
             setTimeout(() => {
                 video.playbackRate = playrate;
-                console.log(print_title, "playbackRate:", video.playbackRate);
+                console.log(`[${us_name}] playbackRate: ${video.playbackRate}`);
             }, 1500);
         });
         parts_div.appendChild(btn_rewind30);
@@ -81,26 +71,27 @@
             video.currentTime += 30;
             setTimeout(() => {
                 video.playbackRate = playrate;
-                console.log(print_title, "playbackRate:", video.playbackRate);
+                console.log(`[${us_name}] playbackRate: ${video.playbackRate}`);
             }, 1500);
         });
         parts_div.appendChild(btn_forward30);
 
         const range = document.createElement('input');
-        range.className = 'UserScript-add-gainrange';
+        range.className = us_name;
         range.max = 900;
         range.type = 'range';
         range.min = 0;
-        range['valueAsNumber'] = 0;
+        range.valueAsNumber = 0;
         //range.style = 'width:200px; height:6px; margin:auto 20px;';
         range.style = 'width:400px;';
         range.onchange = range.oninput =e=> {
-            gainNode.gain.value = def_gain + (range['valueAsNumber'] / 100);
-            console.log(print_title, "gain.value:", gainNode.gain.value);
+            gainNode.gain.value = def_gain + (range.valueAsNumber / 100);
+            console.log(`[${us_name}] gain: ${gainNode.gain.value}`);
         };
         parts_div.appendChild(range);
 
-        console.log(print_title);
+        clearInterval(intervalId);
+        console.log(`[${us_name}]`);
     }, 3000);
 })();
 
