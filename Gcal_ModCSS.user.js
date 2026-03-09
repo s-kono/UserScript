@@ -5,7 +5,7 @@
 // @namespace      https://github.com/s-kono/UserScript
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/Gcal_ModCSS.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/Gcal_ModCSS.user.js
-// @version        0.20240901.0
+// @version        0.20260306.0
 // @match          https://calendar.google.com/calendar/u/0/*
 // @exclude        https://calendar.google.com/calendar/u/0/r/week
 // @grant          none
@@ -15,7 +15,9 @@
 
 (function() {
     'use strict';
-    const css = `
+
+    const style = document.createElement('style');
+    style.textContent = `
 body, header, .tNDBE, .W0m3G::before, .W0m3G .r4nke, .Kk7lMc-DWWcKd-OomVLb-haAclf, .ULpymb, .J09ahd, .buGMKc, .OCQPo, .Gk2izd, .GENA3c, .iGiNKd {
     background-color: #000 !important;
 }
@@ -36,6 +38,9 @@ body, header, .tNDBE, .W0m3G::before, .W0m3G .r4nke, .Kk7lMc-DWWcKd-OomVLb-haAcl
 }
 .RAaXne:not(.Wyo4Qe) {
     background-color: #111;
+    div.wuX2hf {
+        margin-bottom: 0;
+    }
 }
 .wXaa9 {
     background-color: #222 !important;
@@ -100,9 +105,11 @@ div:has(> span.nHqeVd > span.DvyQhe.BdCDHc):hover {
 div:has(> span.nHqeVd > span.WBi6vc):hover {
     background-color: orange !important;
 }
+
 /* Today */
-div:has(> h2.w48V4c.F262Ye) {
-    background-color: #6200ee8f;
+div[role="presentation"] > div[role="row"] > div > div:has(.w48V4c.F262Ye) {
+    background-color: rgba(150,100,200,0.7);
+    border-radius: 20px;
 }
 
 /* for Saturday (Starts on Monday) */
@@ -120,8 +127,6 @@ div[role="presentation"] > div[role="row"] > div > div:nth-of-type(7) {
     background-color: #830042;
 }
     `;
-    const style = document.createElement('style');
-    style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 })();
 
