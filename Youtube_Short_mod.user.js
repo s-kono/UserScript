@@ -5,7 +5,7 @@
 // @namespace      https://github.com/s-kono/UserScript
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/Youtube_Short_mod.user.js
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/Youtube_Short_mod.user.js
-// @version        0.20250810.0
+// @version        0.20260404.0
 // @grant          none
 // @match          https://www.youtube.com/shorts/*
 // @run-at         document-idle
@@ -116,14 +116,26 @@ button[aria-label="再生（k）"] {
         clearInterval(timer_2);
         console.log(`[${us_name}] timer_2 clear`);
 
+        gainNode.gain.value = def_gain;
         const range = document.createElement('input');
         range.classList.add(us_name);
-        range.max = 2000;
         range.type = 'range';
+        range.max = 2000;
         range.min = 0;
-        range.valueAsNumber = 0;
+        const sensitivity = 500;
+        const defaultPosition = range.max / 3;
+        range.valueAsNumber = defaultPosition;
         range.onchange = range.oninput =e=> {
-            gainNode.gain.value = def_gain + (range.valueAsNumber / 500);
+            const currentVal = range.valueAsNumber;
+            let newGain;
+            if (currentVal >= defaultPosition) {
+                const offset = currentVal - defaultPosition;
+                newGain = def_gain + (offset / sensitivity);
+            } else {
+                const ratio = currentVal / defaultPosition;
+                newGain = def_gain * Math.pow(ratio, 3);
+            }
+            gainNode.gain.value = Math.max(0, newGain);
             console.log(`[${us_name}] gain.value: ${gainNode.gain.value}`);
         };
         target.appendChild(range);
