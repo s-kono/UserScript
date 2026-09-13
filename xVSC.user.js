@@ -5,7 +5,7 @@
 // @namespace      https://github.com/s-kono/UserScript
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
-// @version        0.20260912.0
+// @version        0.20260913.0
 // @match          *://*/*
 // @grant          none
 // @run-at         document-idle
@@ -20,7 +20,8 @@
     const log_flag = true;
     const us_name = 'xVSC';
     const DEFAULT_SPEED = 2.2;
-    const HIDE_DELAY_MS = 800;
+    const HIDE_DELAY_MS = 3400;       // auto-hide after the last interaction with the controller
+    const LEAVE_HIDE_DELAY_MS = 800;  // faster hide once the pointer leaves the video/controller area
     const STORAGE_KEY = `${us_name}-speed`;
     // Gain is never persisted: every video starts at x1.0 (a boost remembered from a quiet video
     // must not be applied blindly to the next, possibly loud, one).
@@ -49,6 +50,7 @@
     } catch (e) {
         output_console(`[${us_name}] localStorage read failed`, e);
     }
+
 
     function persistSpeed(speed) {
         try { localStorage.setItem(STORAGE_KEY, String(speed)); } catch (e) {}
@@ -205,7 +207,7 @@
 
     // ---------------------------------------------------------------- keyboard
     function keyboardHandler(e) {
-        const target = e.target;
+        const target = (e.composedPath && e.composedPath()[0]) || e.target;
         const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
         if (isInput) return;
 
@@ -280,8 +282,10 @@
             audioFailed: false,
             container: null,
             hideTimer: null,
-            hovering: false,
+            hovering: false,   // pointer over the controller UI
             dragging: false,
+            visible: false,
+            videoHover: false, // pointer geometrically over the video rect (document-level tracker)
             handlers: {}
         };
         videoData.set(video, data);
@@ -337,26 +341,52 @@
             }
         } catch (e) {}
 
+        // Host element lives in the page DOM. Every layout property is forced with !important so that
+        // site rules such as `.player > div { position:absolute; inset:0; width:100%; height:100% }`
+        // (Prime Video) cannot stretch it over the whole video. The actual UI lives in a shadow root,
+        // out of reach of the site's stylesheets.
+        const host = document.createElement('div');
+        host.classList.add(us_name);
+        host.setAttribute(`${us_name}-data-controller`, String(Date.now()) + Math.random().toString(36).slice(2));
+        function setImp(el, prop, value) { el.style.setProperty(prop, value, 'important'); }
+        [
+            ['position', 'absolute'], ['display', 'block'], ['box-sizing', 'border-box'],
+            ['width', 'auto'], ['height', 'auto'], ['min-width', '0'], ['min-height', '0'],
+            ['max-width', 'none'], ['max-height', 'none'], ['inset', 'auto'],
+            ['margin', '0'], ['padding', '0'], ['border', '0'], ['background', 'transparent'],
+            ['box-shadow', 'none'], ['transform', 'none'], ['flex', 'none'], ['float', 'none'],
+            ['overflow', 'visible'], ['z-index', '2147483000'], ['line-height', 'normal'],
+            ['font-size', '13px'], ['font-family', 'Arial, sans-serif'], ['color', '#fff'],
+            ['opacity', '0'], ['pointer-events', 'none'], ['transition', 'opacity 0.35s ease-in-out'],
+            ['user-select', 'none'], ['touch-action', 'none'], ['visibility', 'visible']
+        ].forEach(([k, v]) => setImp(host, k, v));
+        host.draggable = false;
+
+        const shadow = host.attachShadow({ mode: 'open' });
+        const style = document.createElement('style');
+        style.textContent = `
+            :host { all: initial; }
+            * { box-sizing: border-box; }
+            button { font: inherit; }
+        `;
+        shadow.appendChild(style);
+
         const container = document.createElement('div');
-        container.classList.add(us_name);
-        container.setAttribute(`${us_name}-data-controller`, String(Date.now()) + Math.random().toString(36).slice(2));
         container.setAttribute('role', 'region');
         container.setAttribute('aria-label', 'Playback speed and volume controller');
-
-        container.style.position = 'absolute';
+        container.style.position = 'relative';
         container.style.backgroundColor = 'rgba(0, 0, 0, 0.72)';
         container.style.color = '#fff';
-        container.style.padding = '6px 8px';
+        container.style.padding = '12px 5px 16px 5px';
         container.style.borderRadius = '8px';
         container.style.fontFamily = 'Arial, sans-serif';
-        container.style.zIndex = '10000';
+        container.style.fontSize = '13px';
         container.style.boxShadow = '0 2px 10px rgba(0,0,0,0.5)';
         container.style.userSelect = 'none';
         container.style.boxSizing = 'border-box';
-        container.style.opacity = '0';
-        container.style.pointerEvents = 'none';
-        container.style.transition = 'opacity 0.35s ease-in-out';
         container.style.minWidth = '140px';
+        container.style.width = 'max-content';
+        shadow.appendChild(container);
 
         ['click', 'mousedown', 'mouseup', 'mousemove', 'dblclick',
          'pointerdown', 'pointerup', 'pointermove', 'pointercancel',
@@ -370,26 +400,39 @@
         ['dragstart', 'selectstart'].forEach(eventType => {
             container.addEventListener(eventType, (e) => { e.preventDefault(); e.stopPropagation(); });
         });
-        container.style.touchAction = 'none';
 
+        // Visibility policy:
+        //  - hovering the video only reveals the controller; it does NOT keep it alive
+        //    (otherwise there is no way to get rid of it in fullscreen)
+        //  - hovering the controller itself, or any button/slider/keyboard interaction,
+        //    keeps it visible / restarts the HIDE_DELAY_MS timer
         function showUI() {
             if (data.hideTimer) { clearTimeout(data.hideTimer); data.hideTimer = null; }
-            container.style.opacity = '1';
-            container.style.pointerEvents = 'auto';
+            data.visible = true;
+            setImp(host, 'opacity', '1');
+            setImp(host, 'pointer-events', 'auto');
         }
-        function hideUI() {
+        function hideUI(delay = HIDE_DELAY_MS) {
             if (data.hideTimer) { clearTimeout(data.hideTimer); data.hideTimer = null; }
-            // Keep visible while the pointer stays over the video/controller or a slider drag is in progress.
+            // Keep visible while the pointer stays over the controller or a slider drag is in progress.
             if (data.hovering || data.dragging) return;
             data.hideTimer = setTimeout(() => {
                 data.hideTimer = null;
                 if (data.hovering || data.dragging) return;
-                container.style.opacity = '0';
-                container.style.pointerEvents = 'none';
-            }, HIDE_DELAY_MS);
+                data.visible = false;
+                setImp(host, 'opacity', '0');
+                setImp(host, 'pointer-events', 'none');
+            }, delay);
+        }
+        // Reveal on video hover without extending an already-running timer.
+        function revealUI() {
+            if (data.visible) return;
+            showUI();
+            hideUI();
         }
         data.showUI = showUI;
         data.hideUI = hideUI;
+        data.revealUI = revealUI;
 
         // ---- corner move buttons
         function createSquareBtn(cssPosition, targetPosKey) {
@@ -427,40 +470,26 @@
 
         function applyPosition(posKey) {
             requestAnimationFrame(() => {
-                const containerHeight = container.offsetHeight || container.getBoundingClientRect().height || 48;
+                const hostHeight = host.offsetHeight || host.getBoundingClientRect().height || 48;
                 const videoRect = video.getBoundingClientRect();
                 const videoHeight = (video.clientHeight && video.clientHeight > 0) ? video.clientHeight : (videoRect.height || 0);
                 const parentRect = parent.getBoundingClientRect();
 
-                container.style.top = 'auto';
-                container.style.bottom = 'auto';
-                container.style.left = 'auto';
-                container.style.right = 'auto';
+                setImp(host, 'top', 'auto');
+                setImp(host, 'bottom', 'auto');
+                setImp(host, 'left', 'auto');
+                setImp(host, 'right', 'auto');
 
+                const refHeight = videoHeight || parentRect.height || 0;
+                const bottomTop = `${Math.max(3, Math.round(refHeight - hostHeight - 6))}px`;
                 switch (posKey) {
-                    case 'top-left':
-                        container.style.top = '3px';
-                        container.style.left = '3px';
-                        break;
-                    case 'top-right':
-                        container.style.top = '3px';
-                        container.style.right = '3px';
-                        break;
-                    case 'bottom-left': {
-                        const refHeight = videoHeight || parentRect.height || 0;
-                        container.style.top = `${Math.max(3, Math.round(refHeight - containerHeight - 6))}px`;
-                        container.style.left = '3px';
-                        break;
-                    }
-                    case 'bottom-right': {
-                        const refHeight = videoHeight || parentRect.height || 0;
-                        container.style.top = `${Math.max(3, Math.round(refHeight - containerHeight - 6))}px`;
-                        container.style.right = '3px';
-                        break;
-                    }
+                    case 'top-left':     setImp(host, 'top', '3px');     setImp(host, 'left', '3px');  break;
+                    case 'top-right':    setImp(host, 'top', '3px');     setImp(host, 'right', '3px'); break;
+                    case 'bottom-left':  setImp(host, 'top', bottomTop); setImp(host, 'left', '3px');  break;
+                    case 'bottom-right': setImp(host, 'top', bottomTop); setImp(host, 'right', '3px'); break;
                 }
                 updateCornerButtons(posKey);
-                output_console(`[${us_name}] Position changed to: ${posKey} (containerH=${containerHeight}, videoH=${videoHeight})`);
+                output_console(`[${us_name}] Position changed to: ${posKey} (hostH=${hostHeight}, videoH=${videoHeight})`);
             });
         }
 
@@ -633,31 +662,25 @@
         container.appendChild(gainContainer);
         updateGainDisplay();
 
-        parent.appendChild(container);
-        data.container = container;
-        controllersMap.set(container, video);
+        parent.appendChild(host);
+        data.container = host;
+        controllersMap.set(host, video);
         // re-apply after insertion in case site CSS/JS touched the input
         updateGainDisplay();
         output_console(`[${us_name}] gain slider: value=${range.value} min=${range.min} max=${range.max} (gain x${data.currentGain.toFixed(2)})`);
 
         requestAnimationFrame(() => applyPosition('top-left'));
 
-        // ---- hover handling (stays visible while pointer is over the video / controller)
-        const onParentMouseEnter = () => { data.hovering = true; activeVideo = video; showUIFor(data); };
-        const onParentMouseMove = () => {
-            // fallback for cases where mouseenter was missed (DOM rebuilt under the cursor etc.)
-            if (!data.hovering) { data.hovering = true; activeVideo = video; }
-            showUIFor(data);
-        };
-        const onParentMouseLeave = () => { data.hovering = false; hideUIFor(data); };
-        parent.addEventListener('mouseenter', onParentMouseEnter);
-        parent.addEventListener('mousemove', onParentMouseMove, { passive: true });
-        parent.addEventListener('mouseleave', onParentMouseLeave);
-        data.handlers.onParentMouseEnter = onParentMouseEnter;
-        data.handlers.onParentMouseMove = onParentMouseMove;
-        data.handlers.onParentMouseLeave = onParentMouseLeave;
+        // ---- hover handling
+        // The video area is NOT observed through parent mouse events: sites such as X place a
+        // click-catching overlay outside video.parentElement, so the parent never sees the pointer.
+        // Instead a single document-level (capture) mousemove tracker hit-tests the video rects
+        // (see updateVideoHoverStates). Nothing to register here.
 
-        container.addEventListener('mouseenter', () => { data.hovering = true; activeVideo = video; showUIFor(data); });
+        // controller itself: hovering keeps it visible, leaving restarts the timer
+        container.addEventListener('mouseenter', () => { data.hovering = true; activeVideo = video; showUI(); });
+        container.addEventListener('mousemove', () => { if (!data.hovering) { data.hovering = true; activeVideo = video; } showUI(); });
+        container.addEventListener('mouseleave', () => { data.hovering = false; hideUI(); });
 
         function updateDisplay() { speedDisplay.textContent = `Speed: x${data.currentSpeed.toFixed(1)}`; }
         data.updateDisplay = updateDisplay;
@@ -671,6 +694,47 @@
     function updateDisplayFor(data) { if (data && data.updateDisplay) data.updateDisplay(); }
     function showUIFor(data) { if (data && data.showUI) data.showUI(); }
     function hideUIFor(data) { if (data && data.hideUI) data.hideUI(); }
+
+    // ---------------------------------------------------------------- video hover tracker
+    // One capture-phase mousemove listener on document, throttled to one hit-test per frame.
+    // Works regardless of overlays / stopPropagation in the page since capture runs first.
+    let pointerX = -1, pointerY = -1, hoverRafPending = false;
+
+    function updateVideoHoverStates() {
+        hoverRafPending = false;
+        for (const video of controllersMap.values()) {
+            const data = videoData.get(video);
+            if (!data || !video.isConnected) continue;
+            let inside = false;
+            if (pointerX >= 0) {
+                const r = video.getBoundingClientRect();
+                inside = r.width > 1 && r.height > 1 &&
+                         pointerX >= r.left && pointerX <= r.right &&
+                         pointerY >= r.top && pointerY <= r.bottom;
+            }
+            if (inside) {
+                if (!data.videoHover) { data.videoHover = true; activeVideo = video; }
+                data.revealUI(); // reveal if hidden; never extends a running timer
+            } else if (data.videoHover) {
+                data.videoHover = false;
+                if (!data.hovering && !data.dragging && data.visible) data.hideUI(LEAVE_HIDE_DELAY_MS);
+            }
+        }
+    }
+    function scheduleHoverUpdate() {
+        if (hoverRafPending) return;
+        hoverRafPending = true;
+        requestAnimationFrame(updateVideoHoverStates);
+    }
+    document.addEventListener('mousemove', (e) => {
+        pointerX = e.clientX; pointerY = e.clientY;
+        scheduleHoverUpdate();
+    }, { capture: true, passive: true });
+    // pointer left the document (window) entirely
+    document.addEventListener('mouseleave', () => { pointerX = -1; pointerY = -1; scheduleHoverUpdate(); }, { capture: true, passive: true });
+    // rects change on scroll/resize even if the pointer does not move
+    window.addEventListener('scroll', scheduleHoverUpdate, { capture: true, passive: true });
+    window.addEventListener('resize', scheduleHoverUpdate, { passive: true });
 
     // ---------------------------------------------------------------- cleanup
     function cleanupVideoData(video) {
@@ -690,12 +754,6 @@
             if (data.handlers.onRateChange) video.removeEventListener('ratechange', data.handlers.onRateChange);
             if (data.handlers.onEnded) video.removeEventListener('ended', data.handlers.onEnded);
             if (data.handlers.onPause) video.removeEventListener('pause', data.handlers.onPause);
-            const p = data.parent;
-            if (p) {
-                if (data.handlers.onParentMouseEnter) p.removeEventListener('mouseenter', data.handlers.onParentMouseEnter);
-                if (data.handlers.onParentMouseMove) p.removeEventListener('mousemove', data.handlers.onParentMouseMove);
-                if (data.handlers.onParentMouseLeave) p.removeEventListener('mouseleave', data.handlers.onParentMouseLeave);
-            }
         } catch (e) {}
 
         // NOTE: audio nodes are intentionally kept (audioNodes WeakMap) — the element may be re-attached.
@@ -759,5 +817,6 @@
     }
 
     output_console(`[${us_name}] MutationObserver started (multiple video support)`);
+
 })();
 
