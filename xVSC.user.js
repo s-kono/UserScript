@@ -5,7 +5,7 @@
 // @namespace      https://github.com/s-kono/UserScript
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
-// @version        0.20260913.0
+// @version        0.20260914.0
 // @match          *://*/*
 // @grant          none
 // @run-at         document-idle
@@ -377,10 +377,10 @@
         container.style.position = 'relative';
         container.style.backgroundColor = 'rgba(0, 0, 0, 0.72)';
         container.style.color = '#fff';
-        container.style.padding = '12px 5px 16px 5px';
+        container.style.padding = '12px 5px 10px 5px';
         container.style.borderRadius = '8px';
         container.style.fontFamily = 'Arial, sans-serif';
-        container.style.fontSize = '13px';
+        container.style.fontSize = '12px';
         container.style.boxShadow = '0 2px 10px rgba(0,0,0,0.5)';
         container.style.userSelect = 'none';
         container.style.boxSizing = 'border-box';
@@ -498,7 +498,7 @@
         speedDisplay.style.textAlign = 'center';
         speedDisplay.style.fontSize = '13px';
         speedDisplay.style.fontWeight = '700';
-        speedDisplay.style.marginBottom = '6px';
+        speedDisplay.style.marginBottom = '10px';
         speedDisplay.textContent = `Speed: x${data.currentSpeed.toFixed(1)}`;
 
         const buttonContainer = document.createElement('div');
@@ -555,8 +555,8 @@
 
         const gainLabel = document.createElement('div');
         gainLabel.style.textAlign = 'center';
-        gainLabel.style.fontSize = '12px';
-        gainLabel.style.marginBottom = '4px';
+        gainLabel.style.fontSize = '10px';
+        gainLabel.style.marginBottom = '10px';
         gainLabel.style.opacity = '0.9';
         gainLabel.style.cursor = 'pointer';
         gainLabel.title = 'Click to reset to x1.00';
