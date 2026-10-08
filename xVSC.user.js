@@ -5,7 +5,7 @@
 // @namespace      https://github.com/s-kono/UserScript
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
-// @version        0.20260914.0
+// @version        0.20261008.0
 // @match          *://*/*
 // @grant          none
 // @run-at         document-idle
@@ -33,6 +33,11 @@
     const LOG_GAIN_MIN = Math.log(GAIN_MIN);
     const LOG_GAIN_MAX = Math.log(GAIN_MAX);
 
+    // volume mode range (0..1)
+    const VOLUME_MIN = 0.0;
+    const VOLUME_MAX = 1.0;
+    const VOLUME_SLIDER_STEPS = 100;
+
     function output_console(...args) {
         if (log_flag) console.log(...args);
     }
@@ -51,7 +56,6 @@
         output_console(`[${us_name}] localStorage read failed`, e);
     }
 
-
     function persistSpeed(speed) {
         try { localStorage.setItem(STORAGE_KEY, String(speed)); } catch (e) {}
     }
@@ -60,14 +64,31 @@
         if (!Number.isFinite(g)) return 1.0;
         return Math.max(GAIN_MIN, Math.min(GAIN_MAX, g));
     }
+
+    function clampVolume(v) {
+        if (!Number.isFinite(v)) return 1.0;
+        return Math.max(VOLUME_MIN, Math.min(VOLUME_MAX, v));
+    }
+
     // slider <-> gain (log scale so that x1.0 sits roughly in the middle)
     function gainToSlider(g) {
         return Math.round((Math.log(clampGain(g)) - LOG_GAIN_MIN) / (LOG_GAIN_MAX - LOG_GAIN_MIN) * GAIN_SLIDER_STEPS);
     }
+
     function sliderToGain(v) {
         let g = Math.exp(LOG_GAIN_MIN + (v / GAIN_SLIDER_STEPS) * (LOG_GAIN_MAX - LOG_GAIN_MIN));
         if (Math.abs(g - 1.0) < 0.01) g = 1.0; // snap to exactly x1.0
         return clampGain(g);
+    }
+
+    function volumeToSlider(v) {
+        return Math.round(clampVolume(v) * VOLUME_SLIDER_STEPS);
+    }
+
+    function sliderToVolume(v) {
+        const x = clampVolume(v / VOLUME_SLIDER_STEPS);
+        if (Math.abs(x - 1.0) < 0.01) return 1.0;
+        return x;
     }
 
     // ---------------------------------------------------------------- state
@@ -193,8 +214,8 @@
     function applyGain(data, gain) {
         if (data.audioFailed) {
             // Fallback: another script/extension owns this element's MediaElementSource.
-            // Only attenuation (x1/3 .. x1.0) is possible, via the element's own volume.
-            data.currentGain = Math.min(1.0, clampGain(gain));
+            // Use video.volume instead, covering 0.0 .. 1.0.
+            data.currentGain = clampVolume(gain);
             try { data.video.volume = data.currentGain; } catch (e) {}
         } else {
             data.currentGain = clampGain(gain);
@@ -260,12 +281,15 @@
         const allVideos = Array.from(document.querySelectorAll('video'));
         if (allVideos.length === 0) return;
 
+      // 本US外の既定処理とバッティングしないように遅延スタート (大半のケースでは不要)
+      setTimeout(() => {
         if (allVideos.length >= 2) {
             output_console(`[${us_name}] Multiple video elements detected (${allVideos.length})`);
         }
         allVideos.forEach(v => {
             if (!videoData.has(v)) setupControllerForVideo(v);
         });
+      }, 2000);
     }
 
     function setupControllerForVideo(video) {
@@ -300,6 +324,18 @@
 
         const onPlay = () => {
             activeVideo = video;
+
+            // IMPORTANT: some sites keep media silent until the element is connected or volume is initialized.
+            // Try a connection on play. If WebAudio is unavailable or owned by another script, fallback to video.volume.
+            if (!data.audioFailed) {
+                connectAudio(video, data);
+            }
+            if (data.audioFailed) {
+                try { video.volume = clampVolume(data.currentGain); } catch (e) {}
+            } else if (data.gainNode) {
+                try { data.gainNode.gain.value = data.currentGain; } catch (e) {}
+            }
+
             try { video.playbackRate = data.currentSpeed; } catch (e) {}
             resumeAudioContext();
             output_console(`[${us_name}] Video playback started`);
@@ -583,23 +619,52 @@
         range.style.touchAction = 'none';
         range.draggable = false;
 
+        function syncSliderRangeForMode() {
+            if (data.audioFailed) {
+                range.min = '0';
+                range.max = String(VOLUME_SLIDER_STEPS);
+                range.step = '1';
+                const s = String(volumeToSlider(data.currentGain));
+                if (range.value !== s) range.value = s;
+                range.setAttribute('aria-label', 'Volume (x0.00 - x1.00)');
+                return;
+            }
+
+            range.min = '0';
+            range.max = String(GAIN_SLIDER_STEPS);
+            range.step = '1';
+            const s = String(gainToSlider(data.currentGain));
+            if (range.value !== s) range.value = s;
+            range.setAttribute('aria-label', `Gain (x${GAIN_MIN.toFixed(2)} - x${GAIN_MAX.toFixed(2)})`);
+        }
+
         function updateGainDisplay() {
             if (data.audioFailed) {
-                // Web Audio taken by someone else -> the slider drives video.volume (x1/3 .. x1.0)
+                // Web Audio taken by someone else -> the slider drives video.volume (0.0 .. 1.0)
                 gainLabel.textContent = `Volume: x${data.currentGain.toFixed(2)}`;
-                gainLabel.title = 'Web Audio is already in use by another script; adjusting video.volume instead (x1/3 - x1.0)';
+                gainLabel.title = 'Web Audio is already in use by another script; adjusting video.volume instead (x0.00 - x1.00)';
             } else {
                 gainLabel.textContent = `Gain: x${data.currentGain.toFixed(2)}`;
+                gainLabel.title = 'Click to reset to x1.00';
             }
-            const sv = String(gainToSlider(data.currentGain));
-            if (range.value !== sv) range.value = sv;
+            syncSliderRangeForMode();
         }
         data.updateGainDisplay = updateGainDisplay;
 
         function onSliderValue(v) {
             activeVideo = video;
-            connectAudio(video, data); // on failure applyGain() falls back to video.volume
-            applyGain(data, sliderToGain(v));
+
+            if (data.audioFailed) {
+                applyGain(data, sliderToVolume(v));
+            } else {
+                connectAudio(video, data); // on failure applyGain() falls back to video.volume
+                if (data.audioFailed) {
+                    applyGain(data, sliderToVolume(v));
+                } else {
+                    applyGain(data, sliderToGain(v));
+                }
+            }
+
             output_console(`[${us_name}] ${data.audioFailed ? 'Volume' : 'Gain'}: x${data.currentGain.toFixed(2)}`);
             showUIFor(data);
             hideUIFor(data);
@@ -614,14 +679,18 @@
         const THUMB_HALF = 8; // approx. half thumb width, keeps the value under the thumb centre
         function sliderValueFromPointer(e) {
             const r = range.getBoundingClientRect();
+            const max = Number(range.max) || VOLUME_SLIDER_STEPS;
             const usable = Math.max(1, r.width - THUMB_HALF * 2);
             const ratio = Math.min(1, Math.max(0, (e.clientX - r.left - THUMB_HALF) / usable));
-            return Math.round(ratio * GAIN_SLIDER_STEPS);
+            return Math.round(ratio * max);
         }
+
         function setFromPointer(e) {
+            const max = Number(range.max) || VOLUME_SLIDER_STEPS;
             const v = sliderValueFromPointer(e);
-            if (String(v) !== range.value) range.value = String(v);
-            onSliderValue(v);
+            const clamped = Math.max(0, Math.min(max, v));
+            if (String(clamped) !== range.value) range.value = String(clamped);
+            onSliderValue(clamped);
         }
         range.addEventListener('pointerdown', (e) => {
             if (e.pointerType === 'mouse' && e.button !== 0) return;
@@ -721,11 +790,13 @@
             }
         }
     }
+
     function scheduleHoverUpdate() {
         if (hoverRafPending) return;
         hoverRafPending = true;
         requestAnimationFrame(updateVideoHoverStates);
     }
+
     document.addEventListener('mousemove', (e) => {
         pointerX = e.clientX; pointerY = e.clientY;
         scheduleHoverUpdate();
@@ -817,6 +888,5 @@
     }
 
     output_console(`[${us_name}] MutationObserver started (multiple video support)`);
-
 })();
 
