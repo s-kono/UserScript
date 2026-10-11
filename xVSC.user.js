@@ -5,7 +5,7 @@
 // @namespace      https://github.com/s-kono/UserScript
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
-// @version        0.20261008.0
+// @version        0.20261011.0
 // @match          *://*/*
 // @grant          none
 // @run-at         document-idle
@@ -20,23 +20,21 @@
     const log_flag = true;
     const us_name = 'xVSC';
     const DEFAULT_SPEED = 2.2;
-    const HIDE_DELAY_MS = 3400;       // auto-hide after the last interaction with the controller
-    const LEAVE_HIDE_DELAY_MS = 800;  // faster hide once the pointer leaves the video/controller area
+    const HIDE_DELAY_MS = 3400;
+    const LEAVE_HIDE_DELAY_MS = 800;
     const STORAGE_KEY = `${us_name}-speed`;
-    // Gain is never persisted: every video starts at x1.0 (a boost remembered from a quiet video
-    // must not be applied blindly to the next, possibly loud, one).
 
-    // gain (volume multiplier) range
     const GAIN_MIN = 1 / 3;
     const GAIN_MAX = 5.0;
-    const GAIN_SLIDER_STEPS = 100; // slider resolution (0..100, log scale). 100 == the range input's default max, so the value is never clamped even if max is not honoured.
+    const GAIN_SLIDER_STEPS = 100;
     const LOG_GAIN_MIN = Math.log(GAIN_MIN);
     const LOG_GAIN_MAX = Math.log(GAIN_MAX);
 
-    // volume mode range (0..1)
     const VOLUME_MIN = 0.0;
     const VOLUME_MAX = 1.0;
     const VOLUME_SLIDER_STEPS = 100;
+
+    const WEB_AUDIO_DELAY_MS = 5000;
 
     function output_console(...args) {
         if (log_flag) console.log(...args);
@@ -70,14 +68,13 @@
         return Math.max(VOLUME_MIN, Math.min(VOLUME_MAX, v));
     }
 
-    // slider <-> gain (log scale so that x1.0 sits roughly in the middle)
     function gainToSlider(g) {
         return Math.round((Math.log(clampGain(g)) - LOG_GAIN_MIN) / (LOG_GAIN_MAX - LOG_GAIN_MIN) * GAIN_SLIDER_STEPS);
     }
 
     function sliderToGain(v) {
         let g = Math.exp(LOG_GAIN_MIN + (v / GAIN_SLIDER_STEPS) * (LOG_GAIN_MAX - LOG_GAIN_MIN));
-        if (Math.abs(g - 1.0) < 0.01) g = 1.0; // snap to exactly x1.0
+        if (Math.abs(g - 1.0) < 0.01) g = 1.0;
         return clampGain(g);
     }
 
@@ -92,12 +89,8 @@
     }
 
     // ---------------------------------------------------------------- state
-    // video -> data (WeakMap to avoid leaks)
     const videoData = new WeakMap();
-    // video -> { source, gainNode } (persists even if the video is detached & re-attached,
-    // because createMediaElementSource() may only be called once per element)
     const audioNodes = new WeakMap();
-    // container Element -> video (Map so we can iterate controllers for cleanup)
     const controllersMap = new Map();
 
     let activeVideo = null;
@@ -131,13 +124,11 @@
             sharedAudioContext.resume().catch(() => {});
         }
     }
-    // Any user gesture on the page is a chance to resume a suspended context.
+
     ['pointerdown', 'keydown', 'touchstart'].forEach(t => {
         document.addEventListener(t, resumeAudioContext, { capture: true, passive: true });
     });
 
-    // A cross-origin media source without CORS makes MediaElementSource output silence.
-    // Best effort: reload the media with crossorigin="anonymous" (blob:/MSE sources are unaffected).
     function ensureCorsForWebAudio(video) {
         const src = video.currentSrc || video.src || '';
         if (!src || /^(blob|data|mediastream):/i.test(src)) return;
@@ -161,13 +152,14 @@
             };
             video.addEventListener('loadedmetadata', once);
         };
+
         const onError = () => {
-            // CORS not allowed by the server -> revert so the video at least keeps playing
             output_console(`[${us_name}] CORS reload failed; reverting crossorigin`);
             video.crossOrigin = null;
             restore();
             video.load();
         };
+
         video.addEventListener('error', onError, { once: true });
         video.addEventListener('loadeddata', () => video.removeEventListener('error', onError), { once: true });
 
@@ -176,7 +168,6 @@
         video.load();
     }
 
-    // Connect video -> gain -> destination. Returns true when a gain node is available.
     function connectAudio(video, data) {
         if (data.gainNode) return true;
         if (data.audioFailed) return false;
@@ -204,8 +195,7 @@
             output_console(`[${us_name}] Web Audio connected (gain x${data.currentGain.toFixed(2)})`);
             return true;
         } catch (e) {
-            // e.g. InvalidStateError: another script already created a source for this element
-            output_console(`[${us_name}] Web Audio connection failed`, e);
+            output_console(`[${us_name}] Web Audio connection failed (likely already owned by another script): ${e.message}`);
             data.audioFailed = true;
             return false;
         }
@@ -213,10 +203,9 @@
 
     function applyGain(data, gain) {
         if (data.audioFailed) {
-            // Fallback: another script/extension owns this element's MediaElementSource.
-            // Use video.volume instead, covering 0.0 .. 1.0.
-            data.currentGain = clampVolume(gain);
-            try { data.video.volume = data.currentGain; } catch (e) {}
+            // Another script owns the MediaElementSource; use video.volume instead.
+            data.currentVolume = clampVolume(gain);
+            try { data.video.volume = data.currentVolume; } catch (e) {}
         } else {
             data.currentGain = clampGain(gain);
             if (data.gainNode) {
@@ -248,7 +237,6 @@
             data.currentSpeed = Math.max(0.1, +(data.currentSpeed - 0.1).toFixed(1));
             handled = true;
         } else if (key === '1' || key === 'r' || key === 'R') {
-            // toggle: 1.0 <-> default
             if (Math.abs(data.currentSpeed - 1.0) < 0.0001) {
                 data.currentSpeed = data.defaultSpeed;
             } else {
@@ -281,20 +269,20 @@
         const allVideos = Array.from(document.querySelectorAll('video'));
         if (allVideos.length === 0) return;
 
-      // 本US外の既定処理とバッティングしないように遅延スタート (大半のケースでは不要)
-      setTimeout(() => {
         if (allVideos.length >= 2) {
             output_console(`[${us_name}] Multiple video elements detected (${allVideos.length})`);
         }
+
         allVideos.forEach(v => {
             if (!videoData.has(v)) setupControllerForVideo(v);
         });
-      }, 2000);
     }
 
     function setupControllerForVideo(video) {
         const initialSpeed = persistedSpeed;
         output_console(`[${us_name}] Setting up controller for video`, video);
+
+        const initialVolume = Number.isFinite(video.volume) ? clampVolume(video.volume) : 1.0;
 
         const data = {
             video,
@@ -302,43 +290,50 @@
             currentSpeed: (typeof video.playbackRate === 'number' ? (video.playbackRate || initialSpeed) : initialSpeed),
             defaultSpeed: initialSpeed,
             currentGain: 1.0,
+            currentVolume: initialVolume,
             gainNode: null,
             audioFailed: false,
             container: null,
             hideTimer: null,
-            hovering: false,   // pointer over the controller UI
+            hovering: false,
             dragging: false,
             visible: false,
-            videoHover: false, // pointer geometrically over the video rect (document-level tracker)
-            handlers: {}
+            videoHover: false,
+            handlers: {},
+            webAudioTimer: null
         };
         videoData.set(video, data);
 
-        // Connect lazily on first slider use (a user gesture -> AudioContext can start).
-        // If this element was already wired up earlier (re-attached element), reuse its nodes.
-        if (audioNodes.has(video)) connectAudio(video, data);
-
         createSpeedController(video, data);
 
-        try { video.playbackRate = data.currentSpeed; } catch (e) { output_console(`[${us_name}] Failed to set initial playbackRate`, e); }
+        try { video.playbackRate = data.currentSpeed; } catch (e) {
+            output_console(`[${us_name}] Failed to set initial playbackRate`, e);
+        }
+
+        const scheduleAudioConnection = () => {
+            if (data.webAudioTimer) clearTimeout(data.webAudioTimer);
+            if (data.audioFailed) return;
+
+            data.webAudioTimer = setTimeout(() => {
+                data.webAudioTimer = null;
+                if (!data.audioFailed) {
+                    connectAudio(video, data);
+                }
+                if (data.audioFailed) {
+                    // Preserve the last native volume
+                    try { video.volume = clampVolume(data.currentVolume); } catch (e) {}
+                } else if (data.gainNode) {
+                    try { data.gainNode.gain.value = data.currentGain; } catch (e) {}
+                }
+            }, WEB_AUDIO_DELAY_MS);
+        };
 
         const onPlay = () => {
             activeVideo = video;
-
-            // IMPORTANT: some sites keep media silent until the element is connected or volume is initialized.
-            // Try a connection on play. If WebAudio is unavailable or owned by another script, fallback to video.volume.
-            if (!data.audioFailed) {
-                connectAudio(video, data);
-            }
-            if (data.audioFailed) {
-                try { video.volume = clampVolume(data.currentGain); } catch (e) {}
-            } else if (data.gainNode) {
-                try { data.gainNode.gain.value = data.currentGain; } catch (e) {}
-            }
-
             try { video.playbackRate = data.currentSpeed; } catch (e) {}
             resumeAudioContext();
             output_console(`[${us_name}] Video playback started`);
+            scheduleAudioConnection();
         };
         video.addEventListener('play', onPlay, { passive: true });
         data.handlers.onPlay = onPlay;
@@ -377,10 +372,6 @@
             }
         } catch (e) {}
 
-        // Host element lives in the page DOM. Every layout property is forced with !important so that
-        // site rules such as `.player > div { position:absolute; inset:0; width:100%; height:100% }`
-        // (Prime Video) cannot stretch it over the whole video. The actual UI lives in a shadow root,
-        // out of reach of the site's stylesheets.
         const host = document.createElement('div');
         host.classList.add(us_name);
         host.setAttribute(`${us_name}-data-controller`, String(Date.now()) + Math.random().toString(36).slice(2));
@@ -430,18 +421,11 @@
          'keydown', 'keyup', 'keypress', 'wheel', 'contextmenu'].forEach(eventType => {
             container.addEventListener(eventType, (e) => { e.stopPropagation(); });
         });
-        // An ancestor may be draggable (e.g. the <a> wrapping media on X); dragging the slider would
-        // otherwise start native drag-and-drop of that ancestor after a few pixels.
         container.draggable = false;
         ['dragstart', 'selectstart'].forEach(eventType => {
             container.addEventListener(eventType, (e) => { e.preventDefault(); e.stopPropagation(); });
         });
 
-        // Visibility policy:
-        //  - hovering the video only reveals the controller; it does NOT keep it alive
-        //    (otherwise there is no way to get rid of it in fullscreen)
-        //  - hovering the controller itself, or any button/slider/keyboard interaction,
-        //    keeps it visible / restarts the HIDE_DELAY_MS timer
         function showUI() {
             if (data.hideTimer) { clearTimeout(data.hideTimer); data.hideTimer = null; }
             data.visible = true;
@@ -450,7 +434,6 @@
         }
         function hideUI(delay = HIDE_DELAY_MS) {
             if (data.hideTimer) { clearTimeout(data.hideTimer); data.hideTimer = null; }
-            // Keep visible while the pointer stays over the controller or a slider drag is in progress.
             if (data.hovering || data.dragging) return;
             data.hideTimer = setTimeout(() => {
                 data.hideTimer = null;
@@ -460,7 +443,6 @@
                 setImp(host, 'pointer-events', 'none');
             }, delay);
         }
-        // Reveal on video hover without extending an already-running timer.
         function revealUI() {
             if (data.visible) return;
             showUI();
@@ -470,7 +452,6 @@
         data.hideUI = hideUI;
         data.revealUI = revealUI;
 
-        // ---- corner move buttons
         function createSquareBtn(cssPosition, targetPosKey) {
             const btn = document.createElement('button');
             btn.className = `${us_name}-pos-btn`;
@@ -529,7 +510,6 @@
             });
         }
 
-        // ---- speed display & buttons
         const speedDisplay = document.createElement('div');
         speedDisplay.style.textAlign = 'center';
         speedDisplay.style.fontSize = '13px';
@@ -583,7 +563,6 @@
         container.appendChild(speedDisplay);
         container.appendChild(buttonContainer);
 
-        // ---- volume (gain) slider
         const gainContainer = document.createElement('div');
         gainContainer.style.marginTop = '8px';
         gainContainer.style.paddingTop = '6px';
@@ -599,8 +578,6 @@
 
         const range = document.createElement('input');
         range.type = 'range';
-        // set min/max/step as attributes BEFORE value; a value set while max is still the default (100)
-        // would be clamped to 100 and the thumb would sit at the right end.
         range.setAttribute('min', '0');
         range.setAttribute('max', String(GAIN_SLIDER_STEPS));
         range.setAttribute('step', '1');
@@ -624,7 +601,7 @@
                 range.min = '0';
                 range.max = String(VOLUME_SLIDER_STEPS);
                 range.step = '1';
-                const s = String(volumeToSlider(data.currentGain));
+                const s = String(volumeToSlider(data.currentVolume));
                 if (range.value !== s) range.value = s;
                 range.setAttribute('aria-label', 'Volume (x0.00 - x1.00)');
                 return;
@@ -640,8 +617,7 @@
 
         function updateGainDisplay() {
             if (data.audioFailed) {
-                // Web Audio taken by someone else -> the slider drives video.volume (0.0 .. 1.0)
-                gainLabel.textContent = `Volume: x${data.currentGain.toFixed(2)}`;
+                gainLabel.textContent = `Volume: x${data.currentVolume.toFixed(2)}`;
                 gainLabel.title = 'Web Audio is already in use by another script; adjusting video.volume instead (x0.00 - x1.00)';
             } else {
                 gainLabel.textContent = `Gain: x${data.currentGain.toFixed(2)}`;
@@ -657,7 +633,7 @@
             if (data.audioFailed) {
                 applyGain(data, sliderToVolume(v));
             } else {
-                connectAudio(video, data); // on failure applyGain() falls back to video.volume
+                connectAudio(video, data);
                 if (data.audioFailed) {
                     applyGain(data, sliderToVolume(v));
                 } else {
@@ -665,18 +641,14 @@
                 }
             }
 
-            output_console(`[${us_name}] ${data.audioFailed ? 'Volume' : 'Gain'}: x${data.currentGain.toFixed(2)}`);
+            output_console(`[${us_name}] ${data.audioFailed ? 'Volume' : 'Gain'}: x${data.currentVolume.toFixed(2)}`);
             showUIFor(data);
             hideUIFor(data);
         }
 
-        // keyboard / native changes
         range.addEventListener('input', (e) => { onSliderValue(parseFloat(e.target.value)); });
 
-        // Pointer-driven drag handled by us (pointer capture + preventDefault on pointerdown).
-        // Native range dragging is fragile inside players (YouTube etc.): after a few px the site's
-        // own mousedown/drag handling or native DnD/selection takes over and the thumb stops moving.
-        const THUMB_HALF = 8; // approx. half thumb width, keeps the value under the thumb centre
+        const THUMB_HALF = 8;
         function sliderValueFromPointer(e) {
             const r = range.getBoundingClientRect();
             const max = Number(range.max) || VOLUME_SLIDER_STEPS;
@@ -694,7 +666,7 @@
         }
         range.addEventListener('pointerdown', (e) => {
             if (e.pointerType === 'mouse' && e.button !== 0) return;
-            e.preventDefault();      // no native drag, no DnD, no selection, no compat mousedown for the site
+            e.preventDefault();
             e.stopPropagation();
             data.dragging = true;
             try { range.setPointerCapture(e.pointerId); } catch (err) {}
@@ -711,7 +683,7 @@
             data.dragging = false;
             e.stopPropagation();
             try { range.releasePointerCapture(e.pointerId); } catch (err) {}
-            hideUIFor(data); // starts the hide timer only if the pointer is no longer over the video
+            hideUIFor(data);
         };
         range.addEventListener('pointerup', endDrag);
         range.addEventListener('pointercancel', endDrag);
@@ -734,19 +706,11 @@
         parent.appendChild(host);
         data.container = host;
         controllersMap.set(host, video);
-        // re-apply after insertion in case site CSS/JS touched the input
         updateGainDisplay();
         output_console(`[${us_name}] gain slider: value=${range.value} min=${range.min} max=${range.max} (gain x${data.currentGain.toFixed(2)})`);
 
         requestAnimationFrame(() => applyPosition('top-left'));
 
-        // ---- hover handling
-        // The video area is NOT observed through parent mouse events: sites such as X place a
-        // click-catching overlay outside video.parentElement, so the parent never sees the pointer.
-        // Instead a single document-level (capture) mousemove tracker hit-tests the video rects
-        // (see updateVideoHoverStates). Nothing to register here.
-
-        // controller itself: hovering keeps it visible, leaving restarts the timer
         container.addEventListener('mouseenter', () => { data.hovering = true; activeVideo = video; showUI(); });
         container.addEventListener('mousemove', () => { if (!data.hovering) { data.hovering = true; activeVideo = video; } showUI(); });
         container.addEventListener('mouseleave', () => { data.hovering = false; hideUI(); });
@@ -765,8 +729,6 @@
     function hideUIFor(data) { if (data && data.hideUI) data.hideUI(); }
 
     // ---------------------------------------------------------------- video hover tracker
-    // One capture-phase mousemove listener on document, throttled to one hit-test per frame.
-    // Works regardless of overlays / stopPropagation in the page since capture runs first.
     let pointerX = -1, pointerY = -1, hoverRafPending = false;
 
     function updateVideoHoverStates() {
@@ -783,7 +745,7 @@
             }
             if (inside) {
                 if (!data.videoHover) { data.videoHover = true; activeVideo = video; }
-                data.revealUI(); // reveal if hidden; never extends a running timer
+                data.revealUI();
             } else if (data.videoHover) {
                 data.videoHover = false;
                 if (!data.hovering && !data.dragging && data.visible) data.hideUI(LEAVE_HIDE_DELAY_MS);
@@ -801,9 +763,8 @@
         pointerX = e.clientX; pointerY = e.clientY;
         scheduleHoverUpdate();
     }, { capture: true, passive: true });
-    // pointer left the document (window) entirely
+
     document.addEventListener('mouseleave', () => { pointerX = -1; pointerY = -1; scheduleHoverUpdate(); }, { capture: true, passive: true });
-    // rects change on scroll/resize even if the pointer does not move
     window.addEventListener('scroll', scheduleHoverUpdate, { capture: true, passive: true });
     window.addEventListener('resize', scheduleHoverUpdate, { passive: true });
 
@@ -814,6 +775,7 @@
         output_console(`[${us_name}] Cleaning up controller for video`, video);
 
         if (data.hideTimer) { clearTimeout(data.hideTimer); data.hideTimer = null; }
+        if (data.webAudioTimer) { clearTimeout(data.webAudioTimer); data.webAudioTimer = null; }
 
         try {
             if (data.container && data.container.parentElement) data.container.parentElement.removeChild(data.container);
@@ -827,7 +789,6 @@
             if (data.handlers.onPause) video.removeEventListener('pause', data.handlers.onPause);
         } catch (e) {}
 
-        // NOTE: audio nodes are intentionally kept (audioNodes WeakMap) — the element may be re-attached.
         try { videoData.delete(video); } catch (e) {}
         if (activeVideo === video) activeVideo = null;
     }
@@ -841,7 +802,6 @@
                     if (container && container.parentElement) container.parentElement.removeChild(container);
                     controllersMap.delete(container);
                 } else if (!container.isConnected) {
-                    // site removed our container (e.g. re-rendered parent) -> reset so it gets recreated
                     cleanupVideoData(video);
                     controllersMap.delete(container);
                 }
@@ -869,7 +829,7 @@
             }
             if (needFind) break;
         }
-        // also (re)setup videos whose controller was removed by the site
+
         if (needFind || controllersMap.size < document.querySelectorAll('video').length) findAndSetupVideos();
     });
 
