@@ -5,8 +5,9 @@
 // @namespace      https://github.com/s-kono/UserScript
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
-// @version        0.20261011.0
+// @version        0.20261101.0
 // @match          *://*/*
+// @exclude        https://mora.jp/*
 // @grant          none
 // @run-at         document-idle
 // @icon           data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAD/794AAAAAAGNCHwDKvq8Ael0rAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEREREREREREREREREREREREREREREREREURERERERBEUREQiREREQRRERDMkRERBFEREMAJEREEUREQwAzREQRRERDAANERBFEREMAM0REEUREQzM0REQRRERDNERERBFEREREREREERREREREREERERERERERERERERERERERH//wAA//8AAP//AADAAwAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAwAMAAP//AAD//wAA
