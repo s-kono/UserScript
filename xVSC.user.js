@@ -5,7 +5,7 @@
 // @namespace      https://github.com/s-kono/UserScript
 // @updateURL      https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
 // @downloadURL    https://github.com/s-kono/UserScript/raw/main/xVSC.user.js
-// @version        0.20261101.0
+// @version        0.20261102.0
 // @match          *://*/*
 // @exclude        https://mora.jp/*
 // @grant          none
@@ -18,8 +18,10 @@
 (function() {
     'use strict';
 
-    const log_flag = true;
     const us_name = 'xVSC';
+    console.log(`${us_name}: Running at ${location.href}`);
+
+    const log_flag = true;
     const DEFAULT_SPEED = 2.2;
     const HIDE_DELAY_MS = 3400;
     const LEAVE_HIDE_DELAY_MS = 800;
